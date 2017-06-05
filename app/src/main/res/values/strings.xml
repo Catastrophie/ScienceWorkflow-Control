@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Test</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_robotic__sen__cont">Robotic_Sen_Cont</string>
+    <string name="title_activity_sensors">Sensors</string>
+    <string name="action_selection">Change selection</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+  <!--  <string name="wifi_connection">The active connection is WiFi.</string>
+    <string name="mobile_connection">The active connection is mobile.</string>
+    <string name="no_connection">No wireless or mobile connection!</string> -->
+</resources>
