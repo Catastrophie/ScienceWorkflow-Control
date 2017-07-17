@@ -1,12 +1,38 @@
+
 <resources>
     <string name="app_name">Test</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_robotic__sen__cont">Robotic_Sen_Cont</string>
+    <string name="SDL">Select Desired Action</string>
+    <string name="title_activity_robotic__sen__cont">Robotic Controls</string>
     <string name="title_activity_sensors">Sensors</string>
+    <string name="title_activity_previous">Previous</string>
     <string name="action_selection">Change selection</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-  <!--  <string name="wifi_connection">The active connection is WiFi.</string>
-    <string name="mobile_connection">The active connection is mobile.</string>
-    <string name="no_connection">No wireless or mobile connection!</string> -->
+    <string name="previous">Previous</string>
+    <string name="connect">Connect to Video</string>
+
+    <!--  <string name="wifi_connection">The active connection is WiFi.</string>
+      <string name="mobile_connection">The active connection is mobile.</string>
+      <string name="no_connection">No wireless or mobile connection!</string> -->
+    <item name="videoView" type="id">videoView</item>
+    <item name="AddressField" type="id">addr</item>
+    <item name="ButtonConnect" type="id">connect</item>
+    <item name="StreamView" type="id">streamview</item>
+
+    <!-- Strings related to login -->
+
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+    completions."</string>
+
+
 </resources>
+
