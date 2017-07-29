@@ -15,10 +15,14 @@ public class Robotic_Sen_Cont extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_robotic__sen__cont);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+      //  getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

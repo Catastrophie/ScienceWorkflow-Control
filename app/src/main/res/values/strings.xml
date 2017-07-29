@@ -20,6 +20,7 @@
     <item name="ButtonConnect" type="id">connect</item>
     <item name="StreamView" type="id">streamview</item>
 
+
     <!-- Strings related to login -->
 
     <string name="prompt_email">Email</string>
