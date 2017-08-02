@@ -39,7 +39,7 @@
         </TableRow>
         <TableRow>
             <ImageView
-                android:layout_height="400dp"/>
+                android:layout_height="300dp"/>
 
 
         </TableRow>
@@ -160,7 +160,7 @@
 
                         <ImageView
                             android:id="@+id/day1_icon2"
-                            android:src="@drawable/pressure"
+                            android:src="@drawable/temperature"
                             android:layout_gravity="center_horizontal"
                             android:layout_width="66dp"
                             android:layout_height="150dp" />
@@ -175,7 +175,7 @@
 
                         <ImageView
                             android:id="@+id/day2_icon"
-                            android:src="@drawable/temperature"
+                            android:src="@drawable/humid"
                             android:layout_gravity="center_horizontal"
                             android:layout_width="75dp"
                             android:layout_height="150dp" />
@@ -193,7 +193,7 @@
                             android:layout_width="69dp"
                             android:layout_height="150dp"
                             android:layout_gravity="center_horizontal"
-                            android:src="@drawable/humid" />
+                            android:src="@drawable/pressure" />
                     </LinearLayout>
                 </TableRow>
             </TableLayout>
