@@ -12,9 +12,9 @@
     <string name="previous">Previous</string>
     <string name="connect">Connect to Video</string>
 
-    <!--  <string name="wifi_connection">The active connection is WiFi.</string>
-      <string name="mobile_connection">The active connection is mobile.</string>
-      <string name="no_connection">No wireless or mobile connection!</string> -->
+    <string name="wifi_connection">The active connection is WiFi.</string>
+    <string name="mobile_connection">The active connection is mobile.</string>
+    <string name="no_connection">No wireless or mobile connection!</string>
     <item name="videoView" type="id">videoView</item>
     <item name="AddressField" type="id">addr</item>
     <item name="ButtonConnect" type="id">connect</item>

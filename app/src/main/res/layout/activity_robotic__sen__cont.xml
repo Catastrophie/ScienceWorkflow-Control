@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
@@ -7,81 +8,59 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 // Main Background and Layout
-    <include
-        layout="@layout/content_robotic__sen__cont"
+    <include layout="@layout/content_robotic__sen__cont"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <TableLayout
         android:id="@+id/green_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@color/colorPrimary"
-        android:padding="2dp"
-        android:baselineAligned="false"
-        >
+        android:padding="2dp">
 
         <!-- Open Start Menu -->
-        <LinearLayout
-            android:id="@+id/yellow_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="2dp"
-            android:orientation="vertical">
+        <TableRow
+            android:id="@+id/returnToStart"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            >
 
             <ImageView
-                android:id="@+id/current_conditions_icon"
+                android:id="@+id/menuIcon"
                 android:src="@drawable/ic_menu_camera"
-                android:paddingTop="24dp"
-                android:paddingBottom="24dp"
-                android:layout_gravity="clip_vertical"
-                android:layout_width="100dip"
-                android:layout_height="100dip" />
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:layout_gravity="start"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/Gyro"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="2dp"
-            android:orientation="vertical">
-
+        </TableRow>
+        <TableRow>
             <ImageView
-                android:id="@+id/current_conditions_icon4"
-                android:src="@drawable/ic_menu_camera"
-                android:paddingTop="24dp"
-                android:paddingBottom="24dp"
-                android:gravity="center_vertical"
-                android:layout_gravity="center"
-                android:layout_width="100dip"
-                android:layout_height="100dip" />
+                android:layout_height="50dp"/>
 
-        </LinearLayout>
+
+        </TableRow>
 
         <!-- Switch Camera -->
 
         <LinearLayout
             android:id="@+id/switchCamera"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="30dp"
-            android:paddingBottom="20dp"
-            android:orientation="vertical"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:gravity="bottom"
             >
 
             <ImageView
                 android:id="@+id/current_conditions_icon1"
                 android:src="@drawable/ic_menu_camera"
-                android:paddingTop="24dp"
-                android:paddingBottom="20dp"
                 android:layout_gravity="clip_vertical"
-                android:layout_width="100dip"
-                android:layout_height="100dip" />
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
 
         </LinearLayout>
 
@@ -91,19 +70,17 @@
             android:background="@color/colorPrimary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="bottom"
+            android:layout_gravity="end"
             android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:orientation="horizontal">
+            android:paddingBottom="8dp">
 
             <!-- Communications -->
             <LinearLayout
                 android:id="@+id/orange_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="458dp"
+                android:layout_height="258dp"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
-                android:orientation="vertical"
                 >
 
                 <ImageView
@@ -111,7 +88,7 @@
                     android:src="@drawable/communicationboxbackground"
                     android:layout_width="450dp"
                     android:layout_height="250dp"
-                    android:paddingBottom="28dp"
+                    android:layout_gravity="bottom"
 
                     />
             </LinearLayout>
@@ -129,8 +106,7 @@
                     <LinearLayout
                         android:id="@+id/day1_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content">
 
                         <ImageView
                             android:id="@+id/day1_icon"
@@ -145,8 +121,7 @@
                     <LinearLayout
                         android:id="@+id/day1_layout3"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content">
 
                         <ImageView
                             android:id="@+id/day1_icon3"
@@ -161,8 +136,7 @@
                     <LinearLayout
                     android:id="@+id/day1_layout1"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content">
 
                     <ImageView
                         android:id="@+id/day1_icon1"
@@ -177,8 +151,7 @@
                     <LinearLayout
                         android:id="@+id/day1_layout2"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content">
 
                         <ImageView
                             android:id="@+id/day1_icon2"
@@ -193,8 +166,7 @@
                     <LinearLayout
                         android:id="@+id/day2_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content">
 
                         <ImageView
                             android:id="@+id/day2_icon"
@@ -209,8 +181,7 @@
                     <LinearLayout
                         android:id="@+id/day3_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content">
 
                         <ImageView
                             android:id="@+id/day3_icon"
@@ -222,75 +193,5 @@
                 </TableRow>
             </TableLayout>
         </LinearLayout>
-
-        <!-- Purple Zone -->
-      <!--  <TableLayout
-            android:id="@+id/purple_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:stretchColumns="1"
-            android:gravity="bottom">
-            <TableRow>
-                <ImageView
-                    android:id="@+id/info_icon"
-                    android:src="@android:drawable/ic_menu_info_details"
-                    android:paddingLeft="6dp"
-                    android:paddingRight="6dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:id="@+id/switcher"
-                    android:text="..."
-                    android:paddingLeft="6dp"
-                    android:paddingRight="6dp"
-                    android:textColor="@android:color/white"
-                    android:textSize="24dp"
-                    android:gravity="center_horizontal"
-                    android:layout_height="wrap_content" />
-
-                <ImageView
-                    android:id="@+id/add_button"
-                    android:src="@android:drawable/ic_menu_add"
-                    android:paddingLeft="6dp"
-                    android:paddingRight="6dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </TableRow>
-        </TableLayout>-->
-    </LinearLayout>
-
-<!--
-    <TableLayout
-        android:stretchColumns="0,1,2,3,4,5,6"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TableRow>
-            <LinearLayout>
-                android:id="@+id/hud"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="3dp"
-                android:orientation="vertical:>
-                
-                <ImageView
-                    android:id="@+id/openMenu"
-                    android:src="@drawable/ic_menu_manage"
-                    android:paddingTop="4dp"
-                    android:paddingBottom="2dp"
-                    android:layout_gravity="top"
-                    android:layout_width="50dip"
-                    android:layout_height="50dip" />
-            </LinearLayout>
-            // Chat Readings
-            <LinearLayout>
-                android:id="+id/currentSensors"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-            </LinearLayout>
-        </TableRow>
     </TableLayout>
--->
-</android.support.v4.widget.DrawerLayout>
+</RelativeLayout>

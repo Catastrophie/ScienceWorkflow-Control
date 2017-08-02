@@ -1,5 +1,6 @@
 package edu.utah.chpc.crystal.test;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,7 +21,7 @@ public class Sensors extends AppCompatActivity {   //Calling class -Sensors- and
     Button btnConnect;      //Variable calling btnConnect into import class Button
     MediaController mediaController; //Variable calling mediaController into import class MediaController
 
-    private static final String URL1 = "http://155.101.8.208:80/html/cam.jpg"; //Private is an access specifier. Static is class-level variable. Final make this call as final.
+    private static final String URL1 =("http://155.101.8.208:80/html/cam.jpg"); //Private is an access specifier. Static is class-level variable. Final make this call as final.
 
 
     @Override    //Indicates that a method declaration is intended to override the functionality of an existing method.
