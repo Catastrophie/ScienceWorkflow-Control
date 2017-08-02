@@ -23,23 +23,23 @@
         <!-- Open Start Menu -->
         <TableRow
             android:id="@+id/returnToStart"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             >
 
             <ImageView
                 android:id="@+id/menuIcon"
-                android:src="@drawable/ic_menu_camera"
+                android:src="@drawable/mainmenu"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
                 android:layout_gravity="start"
-                android:layout_width="40dp"
-                android:layout_height="40dp" />
+                android:layout_width="60dp"
+                android:layout_height="60dp" />
 
         </TableRow>
         <TableRow>
             <ImageView
-                android:layout_height="50dp"/>
+                android:layout_height="400dp"/>
 
 
         </TableRow>
@@ -53,14 +53,16 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:gravity="bottom"
+
             >
 
             <ImageView
                 android:id="@+id/current_conditions_icon1"
-                android:src="@drawable/ic_menu_camera"
+                android:src="@drawable/s_camera"
                 android:layout_gravity="clip_vertical"
                 android:layout_width="30dp"
-                android:layout_height="30dp" />
+                android:layout_height="30dp"
+                android:paddingLeft="16dp"/>
 
         </LinearLayout>
 
@@ -85,7 +87,7 @@
 
                 <ImageView
                     android:id="@+id/sensorReadings"
-                    android:src="@drawable/communicationboxbackground"
+                    android:src="@drawable/combox"
                     android:layout_width="450dp"
                     android:layout_height="250dp"
                     android:layout_gravity="bottom"
@@ -95,10 +97,13 @@
 
             <!-- Movement and Sensor Readings -->
             <TableLayout
-                android:stretchColumns="0,1,2,3,4,5"
+                android:stretchColumns="0,1,2"
+                android:shrinkColumns="3,4,5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:paddingLeft="30dp"
+                android:paddingTop="75dp"
                 >
 
                 <TableRow>
@@ -110,10 +115,10 @@
 
                         <ImageView
                             android:id="@+id/day1_icon"
-                            android:src="@drawable/ic_menu_send"
+                            android:src="@drawable/c_panning"
                             android:layout_gravity="center_horizontal"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp" />
+                            android:layout_width="150dp"
+                            android:layout_height="150dp" />
                     </LinearLayout>
 
                     <!-- Robotic Movement -->
@@ -125,10 +130,10 @@
 
                         <ImageView
                             android:id="@+id/day1_icon3"
-                            android:src="@drawable/ic_menu_send"
+                            android:src="@drawable/movement"
                             android:layout_gravity="center_horizontal"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp" />
+                            android:layout_width="150dp"
+                            android:layout_height="150dp" />
                     </LinearLayout>
 
                     <!-- Speedometer -->
@@ -138,12 +143,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <ImageView
-                        android:id="@+id/day1_icon1"
-                        android:src="@drawable/ic_menu_send"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp" />
+                        <ImageView
+                            android:id="@+id/day1_icon1"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/speed" />
                     </LinearLayout>
 
                     <!-- Pressure -->
@@ -155,10 +160,10 @@
 
                         <ImageView
                             android:id="@+id/day1_icon2"
-                            android:src="@drawable/ic_menu_send"
+                            android:src="@drawable/pressure"
                             android:layout_gravity="center_horizontal"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp" />
+                            android:layout_width="66dp"
+                            android:layout_height="150dp" />
                     </LinearLayout>
 
                     <!-- Temperature -->
@@ -170,10 +175,10 @@
 
                         <ImageView
                             android:id="@+id/day2_icon"
-                            android:src="@drawable/ic_menu_manage"
+                            android:src="@drawable/temperature"
                             android:layout_gravity="center_horizontal"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp" />
+                            android:layout_width="75dp"
+                            android:layout_height="150dp" />
                     </LinearLayout>
 
                     <!-- Humidity -->
@@ -185,10 +190,10 @@
 
                         <ImageView
                             android:id="@+id/day3_icon"
-                            android:src="@drawable/ic_menu_gallery"
+                            android:layout_width="69dp"
+                            android:layout_height="150dp"
                             android:layout_gravity="center_horizontal"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp" />
+                            android:src="@drawable/humid" />
                     </LinearLayout>
                 </TableRow>
             </TableLayout>
