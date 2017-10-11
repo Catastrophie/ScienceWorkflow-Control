@@ -35,31 +35,30 @@
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
             android:layout_gravity="start"
-            android:layout_width="40dp"
-            android:layout_height="40dp" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"/>
 
     </TableRow>
 
 
     <!-- Switch Camera -->
-    <!--   <LinearLayout
+       <LinearLayout
            android:id="@+id/switchCamera"
            android:layout_width="75dp"
-           android:layout_height="75dp"
-           android:gravity="bottom"
-           android:paddingBottom="5dp"
-           android:paddingTop="10dp"
-           android:layout_alignAbove="sensorsLayout" >
+           android:layout_height="75dp">
+           <!--android:layout_alignAbove="sensorsLayout" -->
 
            <ImageView
                android:id="@+id/current_conditions_icon1"
                android:layout_width="30dp"
                android:layout_height="30dp"
+               android:layout_weight="1"
                android:layout_gravity="clip_vertical"
                android:paddingLeft="16dp"
                android:src="@drawable/s_camera" />
 
-       </LinearLayout> -->
+       </LinearLayout>
 
     <!-- Sensor Communications -->
 
@@ -67,6 +66,7 @@
         android:id="@+id/sensorsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="2"
         android:layout_gravity="end"
         android:background="@color/colorPrimary"
         android:paddingBottom="8dp"
