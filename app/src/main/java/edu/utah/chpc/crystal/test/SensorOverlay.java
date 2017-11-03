@@ -19,7 +19,7 @@ public class SensorOverlay extends ViewGroup {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         for (int childIndex = 0; childIndex < getChildCount(); childIndex++) {
             View childView = getChildAt(childIndex);
-            childView.layout();// TODO: Location int
+            childView.layout(1,1,1,1);// TODO: Location int
         }
     }
 }
