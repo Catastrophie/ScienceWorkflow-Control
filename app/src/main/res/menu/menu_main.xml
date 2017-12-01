@@ -3,11 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="edu.utah.chpc.crystal.test.MainActivity">
 
-  <!--  <item
-        android:id="@+id/@android:id/summary"
-        android:orderInCategory="100"
-        android:title="@string/summary"
-        app:showAsAction="never" /> -->
 
     <item
         android:id="@+id/action_settings"

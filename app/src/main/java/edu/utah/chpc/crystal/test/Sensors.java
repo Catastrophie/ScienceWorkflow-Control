@@ -16,12 +16,14 @@ import java.io.InputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 
+
 public class Sensors extends AppCompatActivity {
 
     ImageView streamView;
     Button btnConnect;
 
     private static final String URL1 =("http://155.101.8.183:80/html/cam.jpg");
+
 
 
     @Override

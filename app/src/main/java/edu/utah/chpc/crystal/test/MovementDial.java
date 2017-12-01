@@ -6,15 +6,17 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 
 /**
  * Created by crystal on 10/25/2017.
  */
 
-public class MovementDial extends View {
+public class MovementDial extends AppCompatImageView {
 
 
     public interface OnAngleChangedListener {

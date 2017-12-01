@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         >
 
-        <ImageView
+        <ImageButton
             android:id="@+id/menuIcon"
             android:src="@drawable/mainmenu"
             android:paddingTop="5dp"
@@ -43,11 +43,11 @@
 
 
     <!-- Switch Camera -->
-       <LinearLayout
+<!--       <LinearLayout
            android:id="@+id/switchCamera"
            android:layout_width="75dp"
            android:layout_height="75dp">
-           <!--android:layout_alignAbove="sensorsLayout" -->
+           &lt;!&ndash;android:layout_alignAbove="sensorsLayout" &ndash;&gt;
 
            <ImageView
                android:id="@+id/current_conditions_icon1"
@@ -58,7 +58,7 @@
                android:paddingLeft="16dp"
                android:src="@drawable/s_camera" />
 
-       </LinearLayout>
+       </LinearLayout>-->
 
     <!-- Sensor Communications -->
 
@@ -124,10 +124,11 @@
                     android:layout_gravity="center">
 
                     <ImageView
+                        android:contentDescription="s"
                         android:id="@+id/movement360"
                         android:layout_width="150dp"
                         android:layout_height="150dp"
-                        android:src="MovementDial" />
+                        android:src="@drawable/movement" />
                 </LinearLayout>
 
                 <!-- Speedometer -->
