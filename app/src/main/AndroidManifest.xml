@@ -33,7 +33,7 @@
         </activity>
         <activity android:screenOrientation="landscape" android:name=".Robotic_Sen_Cont"/>
       <!--  <activity android:name=".LoginActivity" /> https://stackoverflow.com/questions/22209046/fix-android-studio-login-activity-template-generated-activity  -->
-        <activity android:name=".Sensors" />
+        <activity android:name=".Video" />
         <!--<activity android:name=/> -->
 
 

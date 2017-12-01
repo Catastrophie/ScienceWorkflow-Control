@@ -17,7 +17,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class Sensors extends AppCompatActivity {
+public class Video extends AppCompatActivity {
 
     ImageView streamView;
     Button btnConnect;
@@ -53,7 +53,7 @@ public class Sensors extends AppCompatActivity {
     private void playStream(String url) {
         final String finalURL = url;
         if (url == null) {
-            Toast.makeText(Sensors.this,
+            Toast.makeText(Video.this,
                     "url == null", Toast.LENGTH_LONG).show();
         }else{
             Timer tT = new Timer(true);
@@ -65,7 +65,7 @@ public class Sensors extends AppCompatActivity {
             tT.schedule(task, 1, 1);
 
 
-            Toast.makeText(Sensors.this,
+            Toast.makeText(Video.this,
                     "Connect: " + url,
                     Toast.LENGTH_LONG).show();
         }

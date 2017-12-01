@@ -26,18 +26,19 @@
     <TableRow
         android:id="@+id/returnToStart"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
         <ImageButton
             android:id="@+id/menuIcon"
-            android:src="@drawable/mainmenu"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:layout_gravity="start"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="4"/>
+            android:layout_gravity="start"
+            android:layout_weight="0"
+
+            android:adjustViewBounds="false"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:src="@drawable/mainmenu" />
 
     </TableRow>
 
@@ -186,7 +187,7 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:id="@+id/humic_gauge"
+                        android:id="@+id/humid_gauge"
                         android:layout_width="69dp"
                         android:layout_height="150dp"
                         android:layout_gravity="center_horizontal"
@@ -195,4 +196,11 @@
             </TableRow>
         </TableLayout>
     </LinearLayout>
+
+   <!-- <ImageView
+        android:id="@+id/streamview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_centerInParent="true"
+        />-->
 </RelativeLayout>

@@ -15,7 +15,7 @@ import android.view.MenuItem;
 public class MainActivity extends AppCompatActivity {
 
     Button Robotic_Sen_Contb;
-    Button Sensor;
+    Button Video;
 
 
     @Override
@@ -27,14 +27,14 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Sensor = (Button) findViewById(R.id.button1);
+        Video = (Button) findViewById(R.id.button1);
         Robotic_Sen_Contb = (Button) findViewById(R.id.button2);
 
-        Sensor.setOnClickListener(new View.OnClickListener() {
+        Video.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(MainActivity.this, Sensors.class);
+                Intent intent = new Intent(MainActivity.this, Video.class);
                 startActivity(intent);
             }
         });
