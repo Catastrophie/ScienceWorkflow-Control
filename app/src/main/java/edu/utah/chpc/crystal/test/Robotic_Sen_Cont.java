@@ -26,7 +26,7 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements MovementDial.
 
        // final Video camera = new Video(this); TODO: Implement image feed under sensor readings
 
-       // GridLayout rootLayout = new GridLayout(this);
+        LinearLayout rootLayout = new LinearLayout(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -38,23 +38,23 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements MovementDial.
        // rootLayout.addView(MenuL, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
 
 
-       /* final MovementDial Direction = new MovementDial(this);
+        final MovementDial Direction = new MovementDial(this);
         Direction.setOnAngleChangedListener(this);
-        rootLayout.addView(Direction, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));*/
+        rootLayout.addView(Direction, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
 
-       // setContentView(rootLayout);
-        setContentView(R.layout.activity_robotic__sen__cont);
-
-        mainmenu = (ImageButton) findViewById(R.id.menuIcon);
-
-        mainmenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(Robotic_Sen_Cont.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
+        setContentView(rootLayout);
+//        setContentView(R.layout.activity_robotic__sen__cont);
+//
+//        mainmenu = (ImageButton) findViewById(R.id.menuIcon);
+//
+//        mainmenu.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                Intent intent = new Intent(Robotic_Sen_Cont.this, MainActivity.class);
+//                startActivity(intent);
+//            }
+//        });
     }
 
     @Override

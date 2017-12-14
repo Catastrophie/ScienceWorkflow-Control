@@ -12,6 +12,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
+import junit.framework.TestCase;
+
 /**
  * Created by crystal on 10/25/2017.
  */
@@ -119,7 +121,7 @@ public class MovementDial extends AppCompatImageView {
         int width = 265;
         int height = 265;
         width = Math.max(width, getSuggestedMinimumWidth());
-        height = Math.max(height, getSuggestedMinimumWidth());
+        height = Math.max(height, getSuggestedMinimumHeight());
 
         if (widthMode == MeasureSpec.EXACTLY) {
             width = widthSpec;

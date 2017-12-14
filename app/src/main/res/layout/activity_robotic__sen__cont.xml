@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -26,14 +26,16 @@
     <TableRow
         android:id="@+id/returnToStart"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
         <ImageButton
             android:id="@+id/menuIcon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:layout_weight="0"
+
+            app:layout_constraintVertical_weight="1.0"
 
             android:adjustViewBounds="false"
             android:paddingBottom="5dp"
@@ -44,22 +46,19 @@
 
 
     <!-- Switch Camera -->
-<!--       <LinearLayout
-           android:id="@+id/switchCamera"
-           android:layout_width="75dp"
-           android:layout_height="75dp">
-           &lt;!&ndash;android:layout_alignAbove="sensorsLayout" &ndash;&gt;
+
 
            <ImageView
                android:id="@+id/current_conditions_icon1"
-               android:layout_width="30dp"
-               android:layout_height="30dp"
+               android:layout_width="0dp"
+               android:layout_height="0dp"
                android:layout_weight="1"
                android:layout_gravity="clip_vertical"
                android:paddingLeft="16dp"
+               app:layout_constraintVertical_weight="1.0"
                android:src="@drawable/s_camera" />
 
-       </LinearLayout>-->
+
 
     <!-- Sensor Communications -->
 
@@ -76,18 +75,14 @@
         android:layout_alignParentStart="true">
 
         <!-- Communications -->
-        <LinearLayout
-            android:id="@+id/comBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center">
 
             <ImageView
                 android:id="@+id/sensorReadings"
-                android:layout_width="350dp"
-                android:layout_height="200dp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintVertical_weight="4.0"
                 android:src="@drawable/combox" />
-        </LinearLayout>
+
 
         <!-- Movement and Sensor Readings -->
         <TableLayout
@@ -102,97 +97,72 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <!-- Camera Panning -->
-                <LinearLayout
-                    android:id="@+id/cameraPanningLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
 
                     <ImageView
                         android:id="@+id/camera_pan"
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
                         android:layout_gravity="center_horizontal"
                         android:gravity="bottom"
-                        android:src="@drawable/c_panning" />
-                </LinearLayout>
+                        android:src="@drawable/c_panning"
+                        app:layout_constraintVertical_weight="2.0"/>
 
                 <!-- Robotic Movement -->
 
-                <LinearLayout
-                    android:id="@+id/movementLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center">
 
                     <ImageView
-                        android:contentDescription="s"
                         android:id="@+id/movement360"
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
-                        android:src="@drawable/movement" />
-                </LinearLayout>
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:contentDescription="s"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/movement"
+                        app:layout_constraintVertical_weight="2.0"/>
 
                 <!-- Speedometer -->
 
-                <LinearLayout
-                    android:id="@+id/speedlayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|center"
-                    >
 
                     <ImageView
                         android:id="@+id/speedometer"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
                         android:layout_gravity="center_horizontal"
-                        android:src="@drawable/speed" />
-                </LinearLayout>
+                        android:src="@drawable/speed"
+                        app:layout_constraintVertical_weight="3.0"/>
 
                 <!-- Pressure -->
 
-                <LinearLayout
-                    android:id="@+id/pressurelayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
 
                     <ImageView
                         android:id="@+id/pressure_gauge"
-                        android:layout_width="66dp"
-                        android:layout_height="150dp"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
                         android:layout_gravity="center_horizontal"
-                        android:src="@drawable/pressure" />
-                </LinearLayout>
+                        android:src="@drawable/pressure"
+                        app:layout_constraintVertical_weight="1.0"/>
 
                 <!-- Temperature -->
 
-                <LinearLayout
-                    android:id="@+id/temp_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
 
                     <ImageView
                         android:id="@+id/temp_gauge"
-                        android:layout_width="75dp"
-                        android:layout_height="150dp"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
                         android:layout_gravity="center_horizontal"
-                        android:src="@drawable/temperature" />
-                </LinearLayout>
+                        android:src="@drawable/temperature"
+                        app:layout_constraintVertical_weight="1.0"/>
 
                 <!-- Humidity -->
 
-                <LinearLayout
-                    android:id="@+id/humidlayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
 
                     <ImageView
                         android:id="@+id/humid_gauge"
-                        android:layout_width="69dp"
-                        android:layout_height="150dp"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
                         android:layout_gravity="center_horizontal"
-                        android:src="@drawable/humid" />
-                </LinearLayout>
+                        android:src="@drawable/humid"
+                        app:layout_constraintVertical_weight="1.0"/>
+
             </TableRow>
         </TableLayout>
     </LinearLayout>
