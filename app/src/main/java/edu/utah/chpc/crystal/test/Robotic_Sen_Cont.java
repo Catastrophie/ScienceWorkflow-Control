@@ -34,7 +34,6 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements MovementDial.
       //  getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-      //  final MenuIntent MenuL = new MenuIntent(this);
        // rootLayout.addView(MenuL, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
 
 
