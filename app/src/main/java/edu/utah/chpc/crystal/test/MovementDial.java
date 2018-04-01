@@ -9,10 +9,6 @@ import android.graphics.RectF;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
-import android.widget.ImageView;
-
-import junit.framework.TestCase;
 
 /**
  * Created by crystal on 10/25/2017.
@@ -22,10 +18,10 @@ public class MovementDial extends AppCompatImageView {
 
 
     public interface OnAngleChangedListener {
-        void onAngleChanged(float theta);
+        void onAngleChanged(int theta);
     }
 
-    float _theta = 0.0f;
+    int _theta = 0;
     RectF _knobRect = new RectF();
     RectF _innerLines = new RectF();
     OnAngleChangedListener _angleChangedListener = null;
@@ -34,19 +30,23 @@ public class MovementDial extends AppCompatImageView {
         super(context);
     }
 
-    public float getTheta() {
+    public int getTheta() {
         return _theta;
 
     }
 
-    public void setTheta (float theta){
+    public void setTheta (int theta){
         _theta = theta;
         invalidate();
     }
 
+
     public void setOnAngleChangedListener(OnAngleChangedListener listener) {
         _angleChangedListener = listener;
     }
+
+
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         PointF touchPoint = new PointF();
@@ -55,15 +55,47 @@ public class MovementDial extends AppCompatImageView {
 
         // TODO: touchPoint -> theta
 
-        float theta = (float)Math.atan2(
+        int theta = (int)Math.atan2(
                 (double)touchPoint.y - _knobRect.centerY(),
                 (double)touchPoint.x - _knobRect.centerX());
         setTheta(theta);
 
+
+
         _angleChangedListener.onAngleChanged(theta);
 
-        Log.i ("Touch", "Touch point changed to: " + theta);
+      //  Log.i ("Touch", "Touch point changed to: " + theta);
         return true; // super.onTouchEvent(event); Makes onTouchEvent repeat forever
+
+    }
+
+    /*
+    Maps a value from one number range onto another @author : Aaron Pabst
+    */
+    private int map(double x, double in_min, double in_max, double out_min, double out_max)
+    {
+        int mapVal = (int) ((int)(x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min);
+        return mapVal;
+    }
+
+    /*
+    Mapping theta values
+     */
+    public int mapTheta(int _theta) {
+
+        int theta;
+
+         if (_theta > 0){
+             theta = map(_theta,0,3.14,0,180);
+
+            return theta;
+        } else {
+             theta = map(_theta,0,-3.14,0,-180);
+             theta = ((180 + theta) +180);
+             Log.i ("Touch", "Touch point changed to: " + theta);
+             return theta;
+
+        }
 
     }
 

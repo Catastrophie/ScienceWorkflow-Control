@@ -31,7 +31,7 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements MovementDial.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-      //  getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
        // rootLayout.addView(MenuL, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
@@ -42,18 +42,18 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements MovementDial.
         rootLayout.addView(Direction, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
 
         setContentView(rootLayout);
-//        setContentView(R.layout.activity_robotic__sen__cont);
-//
-//        mainmenu = (ImageButton) findViewById(R.id.menuIcon);
-//
-//        mainmenu.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                Intent intent = new Intent(Robotic_Sen_Cont.this, MainActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+       // setContentView(R.layout.activity_robotic__sen__cont);
+
+     //  mainmenu = (ImageButton) findViewById(R.id.menuIcon);
+
+      /* mainmenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(Robotic_Sen_Cont.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });*/
     }
 
     @Override
@@ -63,8 +63,10 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements MovementDial.
         return true;
     }
     @Override
-    public void onAngleChanged(float theta) {
-        float direct = theta; //conversion on theta for volume
+    public void onAngleChanged(int theta) {
+        int direction = theta; //conversion on theta for volume
+
+
 
     }
 
