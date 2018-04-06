@@ -69,35 +69,7 @@ public class MovementDial extends AppCompatImageView {
 
     }
 
-    /*
-    Maps a value from one number range onto another @author : Aaron Pabst
-    */
-    private int map(double x, double in_min, double in_max, double out_min, double out_max)
-    {
-        int mapVal = (int) ((int)(x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min);
-        return mapVal;
-    }
 
-    /*
-    Mapping theta values
-     */
-    public int mapTheta(int _theta) {
-
-        int theta;
-
-         if (_theta > 0){
-             theta = map(_theta,0,3.14,0,180);
-
-            return theta;
-        } else {
-             theta = map(_theta,0,-3.14,0,-180);
-             theta = ((180 + theta) +180);
-             Log.i ("Touch", "Touch point changed to: " + theta);
-             return theta;
-
-        }
-
-    }
 
     @Override
     protected void onDraw(Canvas canvas) {
