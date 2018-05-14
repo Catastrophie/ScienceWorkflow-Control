@@ -9,10 +9,6 @@ import android.graphics.RectF;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
-import android.widget.ImageView;
-
-import junit.framework.TestCase;
 
 /**
  * Created by crystal on 10/25/2017.
@@ -20,18 +16,32 @@ import junit.framework.TestCase;
 
 public class MovementDial extends AppCompatImageView {
 
+    public float x, y, Radius, _theta, yShift, offset;
+    //private int origin = 90;
+    private double xVal, yVal, distance;
+
+    private RectF _knobRect = new RectF();
+    private PointF nibCenter;
+    private RectF nibRect = new RectF();
+
+    OnAngleChangedListener _angleChangedListener = null;
+
 
     public interface OnAngleChangedListener {
         void onAngleChanged(float theta);
     }
 
-    float _theta = 0.0f;
-    RectF _knobRect = new RectF();
-    RectF _innerLines = new RectF();
-    OnAngleChangedListener _angleChangedListener = null;
+
 
     public MovementDial(Context context) {
         super(context);
+
+
+       // this.nobWidth = (int) (_knobRect.width() * .3);
+
+       // this.x=getX();
+       // this.y=getY();
+        nibCenter = new PointF(_knobRect.centerX(), _knobRect.centerY());
     }
 
     public float getTheta() {
@@ -44,28 +54,102 @@ public class MovementDial extends AppCompatImageView {
         invalidate();
     }
 
+
     public void setOnAngleChangedListener(OnAngleChangedListener listener) {
         _angleChangedListener = listener;
     }
+
+    private int map(double x, double in_min, double in_max, double out_min, double out_max)
+    {
+        int mapVal = (int) ((int)(x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min);
+        return mapVal;
+    }
+
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
+
+
         PointF touchPoint = new PointF();
-        touchPoint.x = event.getX();
-        touchPoint.y = event.getY();
 
-        // TODO: touchPoint -> theta
+        touchPoint.x = event.getX() -  _knobRect.centerX();
+        touchPoint.y = map((event.getY()),0,(_knobRect.height()-_knobRect.centerY()),(_knobRect.height()-_knobRect.centerY()), 0);
 
-        float theta = (float)Math.atan2(
-                (double)touchPoint.y - _knobRect.centerY(),
-                (double)touchPoint.x - _knobRect.centerX());
+        x = touchPoint.x;
+        y = touchPoint.y;
+        yShift = event.getY();
+
+        float theta = mapThetaCoords(x,y);
+
+        Log.i("Touch", "Xvalue is :" +touchPoint.x);
+        Log.i("Touch", "Yvalue is :" +touchPoint.y);
+        Log.i ("Touch", "Touch point 3 changed to: " + theta);
+
         setTheta(theta);
+
+
+
+
+        distance = (float)Math.hypot(x, y);
+
+
+        if(event.getAction() == MotionEvent.ACTION_DOWN) {
+            if(distance <= Radius) {
+
+                x = nibCenter.x - x;
+                y = nibCenter.y - y;
+
+            } else if(distance <= _knobRect.width())
+
+            nibCenter.x =  _knobRect.centerX() + Radius * (float)Math.toRadians(Math.cos(_theta));
+            nibCenter.y =  _knobRect.centerY() + Radius * (float)Math.toRadians(Math.sin(_theta));
+
+        } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+
+        } else if (event.getAction() == MotionEvent.ACTION_UP){
+            reset();
+        }
+
+
+
 
         _angleChangedListener.onAngleChanged(theta);
 
-        Log.i ("Touch", "Touch point changed to: " + theta);
+
         return true; // super.onTouchEvent(event); Makes onTouchEvent repeat forever
 
     }
+    public float mapThetaCoords(float x, float y) {
+
+        double atan2 = Math.atan2(y , x);
+        float theta;
+
+        if (x >= 0 && y >= 0) {             // Q 1
+            theta = (float) Math.toDegrees(atan2);
+            return theta;
+
+        } else if (x < 0 && y >= 0) {       // Q 2
+            theta = (float)  Math.toDegrees(atan2);
+            return theta;
+        } else if (x < 0 && y < 0) {        // Q 3
+            theta = (float) Math.toDegrees(atan2) + 360;
+            return theta;
+
+        } else if (x > 0 && y < 0) {        // Q 4
+            theta = (float) Math.toDegrees(atan2) + 360;
+            return theta;
+        }
+        return 0;
+    }
+
+    public void reset(){
+
+    }
+    public void newView(){
+
+    }
+
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -77,20 +161,20 @@ public class MovementDial extends AppCompatImageView {
         _knobRect.right = getWidth()- getPaddingRight();
         _knobRect.bottom = _knobRect.width();
 
-        float offset = (getHeight() - _knobRect.height()) * 0.5f;
+        offset = (getHeight() - _knobRect.height()) * 0.5f;
         _knobRect.top += offset;
         _knobRect.bottom += offset;
 
-        float Radius = _knobRect.width() * 0.35f;
 
+        Radius = _knobRect.width() * 0.35f;
 
-        PointF nibCenter = new PointF();
-        nibCenter.x =  _knobRect.centerX() + Radius * (float)Math.cos((double)_theta);
-        nibCenter.y =  _knobRect.centerY() + Radius * (float)Math.sin((double)_theta);
+        nibCenter.x = x + _knobRect.centerX();
+        nibCenter.y = yShift;
+
 
         float nibRadius = Radius * 0.2f;
 
-        RectF nibRect = new RectF();
+
         nibRect.left = nibCenter.x - nibRadius;
         nibRect.top = nibCenter.y - nibRadius;
         nibRect.right = nibCenter.x + nibRadius;
@@ -98,14 +182,13 @@ public class MovementDial extends AppCompatImageView {
 
 
         Paint knobPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        knobPaint.setColor(Color.WHITE);
-        Paint knobInner = new Paint(Paint.ANTI_ALIAS_FLAG);
         knobPaint.setColor(Color.BLACK);
         Paint nibPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        nibPaint.setColor(Color.YELLOW);
+        nibPaint.setColor(Color.MAGENTA);
+
         canvas.drawOval(_knobRect, knobPaint);
         canvas.drawOval(nibRect, nibPaint);
-        canvas.drawOval (_innerLines, knobInner);
+
     }
 
     @Override
@@ -118,8 +201,8 @@ public class MovementDial extends AppCompatImageView {
         int heightSpec = MeasureSpec.getSize(heightMeasureSpec);
 
 
-        int width = 265;
-        int height = 265;
+        int width = 300;
+        int height = 300;
         width = Math.max(width, getSuggestedMinimumWidth());
         height = Math.max(height, getSuggestedMinimumHeight());
 

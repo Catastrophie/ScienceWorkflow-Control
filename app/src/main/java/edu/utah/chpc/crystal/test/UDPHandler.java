@@ -1,11 +1,11 @@
 package edu.utah.chpc.crystal.test;
 
-        import java.io.IOException;
-        import java.net.DatagramPacket;
-        import java.net.DatagramSocket;
-        import java.net.InetAddress;
-        import java.net.SocketException;
-        import java.net.UnknownHostException;
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 
 /**
  * Created by crystal on 2/1/2018.
@@ -81,7 +81,7 @@ public class UDPHandler {
             }
         }
     }
-    private class UDPThreadSendReceive extends Thread {
+    public class UDPThreadSendReceive extends Thread { //ask Aaron why it was private?
 
         // global vs local
 

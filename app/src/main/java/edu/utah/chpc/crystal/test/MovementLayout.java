@@ -5,6 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
+ *
+ * I don't really need this. Using it for an example.
  * Created by crystal on 10/25/2017.
  */
 
