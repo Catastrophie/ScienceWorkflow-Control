@@ -21,7 +21,7 @@ public class MovementDial extends AppCompatImageView {
     private double xVal, yVal, distance;
 
     private RectF _knobRect = new RectF();
-    private PointF nibCenter;
+    private PointF nibCenter, touchPoint;
     private RectF nibRect = new RectF();
 
     OnAngleChangedListener _angleChangedListener = null;
@@ -35,6 +35,7 @@ public class MovementDial extends AppCompatImageView {
 
     public MovementDial(Context context) {
         super(context);
+
 
 
        // this.nobWidth = (int) (_knobRect.width() * .3);
@@ -67,57 +68,107 @@ public class MovementDial extends AppCompatImageView {
 
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    public boolean onTouchEvent(MotionEvent e) {
 
 
 
-        PointF touchPoint = new PointF();
+        yShift = e.getY();
 
-        touchPoint.x = event.getX() -  _knobRect.centerX();
-        touchPoint.y = map((event.getY()),0,(_knobRect.height()-_knobRect.centerY()),(_knobRect.height()-_knobRect.centerY()), 0);
+        touchPoint = new PointF();
+
+        touchPoint.x = e.getX() -  _knobRect.centerX();
+        touchPoint.y = map(yShift,0,(_knobRect.height()-_knobRect.centerY()),(_knobRect.height()-_knobRect.centerY()), 0);
 
         x = touchPoint.x;
         y = touchPoint.y;
-        yShift = event.getY();
+
 
         float theta = mapThetaCoords(x,y);
-
+/*
         Log.i("Touch", "Xvalue is :" +touchPoint.x);
         Log.i("Touch", "Yvalue is :" +touchPoint.y);
-        Log.i ("Touch", "Touch point 3 changed to: " + theta);
+        Log.i ("Touch", "Touch point 3 changed to: " + theta);*/
 
         setTheta(theta);
-
-
 
 
         distance = (float)Math.hypot(x, y);
 
 
-        if(event.getAction() == MotionEvent.ACTION_DOWN) {
-            if(distance <= Radius) {
+        if(e.getAction() == MotionEvent.ACTION_DOWN) {
+            Log.i("Touch", "Xvalue touch is :" +touchPoint.x);
+            Log.i("Touch", "Yvalue touch is :" +touchPoint.y);
+            Log.i ("Touch", "Touch point 6 changed to: " + theta);
+          /*  if(distance <= Radius) {
+                x = touchPoint.x;
+                if(y <= 0){
+                    y = touchPoint.y + nibCenter.y;
+
+                } else {
+                    y = touchPoint.y;
+
+                }
+*//*
+                x = nibCenter.x - x;
+                y = nibCenter.y - yShift;*//*
+
+            } else if(distance <= _knobRect.width()) {
+                x = touchPoint.x;
+                if(y <= 0){
+                    y = touchPoint.y + nibCenter.y;
+
+                } else {
+                    y = touchPoint.y;
+
+                }*/
+
+
+/*              nibCenter.x = _knobRect.centerX() + Radius * (float) Math.toRadians(Math.cos(_theta));
+                nibCenter.y = _knobRect.centerY() + Radius * (float) Math.toRadians(Math.sin(_theta));
 
                 x = nibCenter.x - x;
-                y = nibCenter.y - y;
+                y = nibCenter.y - yShift;
 
-            } else if(distance <= _knobRect.width())
+*/
+ //           }
+            return true;
 
-            nibCenter.x =  _knobRect.centerX() + Radius * (float)Math.toRadians(Math.cos(_theta));
-            nibCenter.y =  _knobRect.centerY() + Radius * (float)Math.toRadians(Math.sin(_theta));
 
-        } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+        } else if (e.getAction() == MotionEvent.ACTION_MOVE) {
+            if(distance <= Radius) {
+                x = touchPoint.x;
+                if(y <= 0){
+                    y = touchPoint.y;
 
-        } else if (event.getAction() == MotionEvent.ACTION_UP){
+                } else {
+                    y = touchPoint.y;
+                }
+                Log.i("Touch", "Xvalue move1 is :" + x);
+                Log.i("Touch", "Yvalue move1 is :" + y);
+
+            } else if (distance >= Radius){
+                x = touchPoint.x;
+                if(y <= 0){
+                    y = touchPoint.y + nibCenter.y;
+
+                } else {
+                    y = touchPoint.y;
+                }
+                /*nibCenter.y = y + _knobRect.centerY();
+                map(yShift, 0, (_knobRect.height()-_knobRect.centerY()),(_knobRect.height()-_knobRect.centerY()), 0);*/
+                Log.i("Touch", "Xvalue move2 is :" + x);
+                Log.i("Touch", "Yvalue move2 is :" + y);
+
+            }
+            return true;
+
+        } else if (e.getAction() == MotionEvent.ACTION_UP){
             reset();
+
         }
 
 
-
-
-        _angleChangedListener.onAngleChanged(theta);
-
-
-        return true; // super.onTouchEvent(event); Makes onTouchEvent repeat forever
+        return false; // super.onTouchEvent(event); Makes onTouchEvent repeat forever
 
     }
     public float mapThetaCoords(float x, float y) {
@@ -129,7 +180,7 @@ public class MovementDial extends AppCompatImageView {
             theta = (float) Math.toDegrees(atan2);
             return theta;
 
-        } else if (x < 0 && y >= 0) {       // Q 2
+        } else if (x < 0 && y > 0) {       // Q 2
             theta = (float)  Math.toDegrees(atan2);
             return theta;
         } else if (x < 0 && y < 0) {        // Q 3
@@ -144,11 +195,15 @@ public class MovementDial extends AppCompatImageView {
     }
 
     public void reset(){
+       x = _knobRect.centerX()-(_knobRect.width()/2);
+       y = (_knobRect.height()/2)-_knobRect.centerY();
+       nibCenter.x = x;
+       nibCenter.y = y + _knobRect.centerY();
+       _theta = 0f;
+       distance = 0f;
 
     }
-    public void newView(){
 
-    }
 
 
     @Override
@@ -169,7 +224,7 @@ public class MovementDial extends AppCompatImageView {
         Radius = _knobRect.width() * 0.35f;
 
         nibCenter.x = x + _knobRect.centerX();
-        nibCenter.y = yShift;
+        nibCenter.y = y + _knobRect.centerY();
 
 
         float nibRadius = Radius * 0.2f;
@@ -201,8 +256,8 @@ public class MovementDial extends AppCompatImageView {
         int heightSpec = MeasureSpec.getSize(heightMeasureSpec);
 
 
-        int width = 300;
-        int height = 300;
+        int width = 800;
+        int height = 800;
         width = Math.max(width, getSuggestedMinimumWidth());
         height = Math.max(height, getSuggestedMinimumHeight());
 
