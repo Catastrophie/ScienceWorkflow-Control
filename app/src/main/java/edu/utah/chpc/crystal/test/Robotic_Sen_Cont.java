@@ -85,10 +85,6 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements MovementDial.
         return message.getText().toString();
     }
 
-    private String Robot() {
-        return "";
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -121,37 +117,40 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements MovementDial.
         }
 
 
-
-
-    /*
-Mapping theta values
-*/
-  /*  public int mapTheta(float _theta){
-        int theta;
-
-
-        if(_theta > 0){
-            theta = map(_theta,0,3.14,0,180);
-            Log.i ("Touch", "Touch point 1 changed to: " + theta);
-            return theta;
-
-        }
-        if(_theta < 0) {
-            theta = map(_theta,0,-3.14,0,-180);
-            theta = ((180 + theta) +180);
-            Log.i ("Touch", "Touch point 2 changed to: " + theta);
-            return theta;
-
-            }
-            return 0;
-    }*/
-
     @Override
     public void onAngleChanged(float theta) {
-       // int direction = mapTheta(theta);
+        int thetaInt;
+        int speed = 0;
 
-        String dCommand = "DRIVE";
-       // Robot() = dCommand + direction;
+        if (theta > 0 && theta <= 45){   //theta is greater than 0 but less than 45
+            thetaInt = 315;             // drive forward turning right
+
+        }else if (theta > 45 && theta <= 90){
+            thetaInt = 0;               // drive forward
+
+        }else if (theta > 90 && theta <= 135){
+            thetaInt = 45;              // drive forward turning left
+
+        }else if (theta > 135 && theta <= 180){
+            thetaInt = 90;              // turn right
+
+        }else if (theta > 180 && theta <= 225){
+            thetaInt = 135;             // drive reverse turning left
+
+        }else if (theta > 225 && theta <= 270){
+            thetaInt = 180;             // drive reverse
+
+        }else if (theta > 270 && theta <= 315){
+            thetaInt = 225;             // drive reverse turning right
+
+        }else if (theta > 315 && theta <= 360){
+            thetaInt = 270;             // turning right
+
+        } else {
+            thetaInt= -1;
+        }
+
+        emerRobo_Cont.drive(thetaInt, speed);
 
     }
 
@@ -162,6 +161,7 @@ Mapping theta values
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        emerRobo_Cont.kill();
     }
 
 

@@ -16,9 +16,9 @@ import android.view.MotionEvent;
 
 public class MovementDial extends AppCompatImageView {
 
-    public float x, y, Radius, _theta, yShift, offset;
+    public float x, y, r, Radius, _theta, xShift, yShift, offset;
     //private int origin = 90;
-    private double xVal, yVal, distance;
+    private double xVal, yVal, distance, distanceAdj;
 
     private RectF _knobRect = new RectF();
     private PointF nibCenter, touchPoint;
@@ -66,13 +66,11 @@ public class MovementDial extends AppCompatImageView {
         return mapVal;
     }
 
-
     @Override
     public boolean onTouchEvent(MotionEvent e) {
 
-
-
         yShift = e.getY();
+        xShift = e.getX();
 
         touchPoint = new PointF();
 
@@ -82,8 +80,7 @@ public class MovementDial extends AppCompatImageView {
         x = touchPoint.x;
         y = touchPoint.y;
 
-
-        float theta = mapThetaCoords(x,y);
+        float theta = mapThetaCoords(x,y);  //maps out theta values between 0 to 360 using a traditional unit circle layout.
 /*
         Log.i("Touch", "Xvalue is :" +touchPoint.x);
         Log.i("Touch", "Yvalue is :" +touchPoint.y);
@@ -91,71 +88,79 @@ public class MovementDial extends AppCompatImageView {
 
         setTheta(theta);
 
+/*      x, y = radialToCartesianCoords(r, theta);*/
 
-        distance = (float)Math.hypot(x, y);
+        distance = (float) Math.hypot(x, y); //polar coordinate radius (r = sqrt x^2 + y^2)
 
 
         if(e.getAction() == MotionEvent.ACTION_DOWN) {
             Log.i("Touch", "Xvalue touch is :" +touchPoint.x);
             Log.i("Touch", "Yvalue touch is :" +touchPoint.y);
             Log.i ("Touch", "Touch point 6 changed to: " + theta);
-          /*  if(distance <= Radius) {
-                x = touchPoint.x;
-                if(y <= 0){
-                    y = touchPoint.y + nibCenter.y;
 
-                } else {
-                    y = touchPoint.y;
+        if(distance <= Radius) {
+            x = touchPoint.x;
+            y = touchPoint.y;
 
-                }
-*//*
-                x = nibCenter.x - x;
-                y = nibCenter.y - yShift;*//*
+            double Radian = Math.toRadians(_theta);
+            final double PIValue = Math.PI/180;
 
-            } else if(distance <= _knobRect.width()) {
-                x = touchPoint.x;
-                if(y <= 0){
-                    y = touchPoint.y + nibCenter.y;
+            float xNibValue = (float)(distance * Math.cos(PIValue*Radian));
+            float yNibValue = (float)(distance * Math.sin(PIValue*Radian));
 
-                } else {
-                    y = touchPoint.y;
-
-                }*/
+            nibCenter.x = xNibValue; // _knobRect.centerX() + Radius *
+            nibCenter.y = map(yNibValue,0,(_knobRect.height()-_knobRect.centerY()),(_knobRect.height()-_knobRect.centerY()), 0);
+            // _knobRect.centerY() + Radius *
 
 
-/*              nibCenter.x = _knobRect.centerX() + Radius * (float) Math.toRadians(Math.cos(_theta));
-                nibCenter.y = _knobRect.centerY() + Radius * (float) Math.toRadians(Math.sin(_theta));
+            Log.i("Touch", "Xvalue touch2 is :" +touchPoint.x);
+            Log.i("Touch", "Yvalue touch2 is :" +touchPoint.y);
+            Log.i("Touch", "Xvalue nib2 touch is :" +nibCenter.x);
+            Log.i("Touch", "Yvalue nib2 touch is :" +nibCenter.y);
 
-                x = nibCenter.x - x;
-                y = nibCenter.y - yShift;
+        } else if(distance <= _knobRect.width()) {
+            x = touchPoint.x;
+            y = touchPoint.y;
 
-*/
- //           }
+            Log.i("Touch", "Xvalue touch3 is :" +touchPoint.x);
+            Log.i("Touch", "Yvalue touch3 is :" +touchPoint.y);
+
+            nibCenter.x = (float)(distance * Math.cos(Math.toRadians(_theta))); // _knobRect.centerX() + Radius *
+            nibCenter.y = (float)(distance * Math.sin(Math.toRadians(_theta))); // _knobRect.centerY() + Radius *
+
+            Log.i("Touch", "Xvalue nib1 touch is :" +nibCenter.x);
+            Log.i("Touch", "Yvalue nib1 touch is :" +nibCenter.y);
+           /* x = nibCenter.x - x;
+            y = nibCenter.y - yShift;*/
+
+
+
+            }
             return true;
 
 
         } else if (e.getAction() == MotionEvent.ACTION_MOVE) {
-            if(distance <= Radius) {
-                x = touchPoint.x;
-                if(y <= 0){
-                    y = touchPoint.y;
 
-                } else {
-                    y = touchPoint.y;
-                }
+            Log.i("Touch", "Xvalue2 move is :" + touchPoint.x);
+            Log.i("Touch", "Yvalue2 move is :" + touchPoint.y);
+            Log.i ("Touch", "Move value point 7 changed to: " + theta);
+
+            distanceAdj = distance;
+            distance = Math.min(distance, distanceAdj); //comparing changing polar radius values as coordinates change place.
+
+            if(distance <= Radius) {    //check to see if polar radius coordinate is less or equal to the radius value
+                x = touchPoint.x;
+                y = touchPoint.y;
+                nibCenter.y = y;
                 Log.i("Touch", "Xvalue move1 is :" + x);
-                Log.i("Touch", "Yvalue move1 is :" + y);
 
-            } else if (distance >= Radius){
+
+            } else if (distance > Radius){
                 x = touchPoint.x;
-                if(y <= 0){
-                    y = touchPoint.y + nibCenter.y;
+                y = touchPoint.y;
+                Log.i("Touch", "Yvalue (greater than) move is :" + y);
+                nibCenter.y = y; // + _knobRect.centerY();
 
-                } else {
-                    y = touchPoint.y;
-                }
-                /*nibCenter.y = y + _knobRect.centerY();
-                map(yShift, 0, (_knobRect.height()-_knobRect.centerY()),(_knobRect.height()-_knobRect.centerY()), 0);*/
                 Log.i("Touch", "Xvalue move2 is :" + x);
                 Log.i("Touch", "Yvalue move2 is :" + y);
 
@@ -164,9 +169,7 @@ public class MovementDial extends AppCompatImageView {
 
         } else if (e.getAction() == MotionEvent.ACTION_UP){
             reset();
-
         }
-
 
         return false; // super.onTouchEvent(event); Makes onTouchEvent repeat forever
 
@@ -196,13 +199,14 @@ public class MovementDial extends AppCompatImageView {
 
     public void reset(){
        x = _knobRect.centerX()-(_knobRect.width()/2);
-       y = (_knobRect.height()/2)-_knobRect.centerY();
+       y = _knobRect.centerY()-(_knobRect.height()/2);
        nibCenter.x = x;
        nibCenter.y = y + _knobRect.centerY();
        _theta = 0f;
        distance = 0f;
 
     }
+
 
 
 
