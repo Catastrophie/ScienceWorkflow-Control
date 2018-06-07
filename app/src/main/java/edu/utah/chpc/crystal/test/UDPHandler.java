@@ -28,10 +28,10 @@ public class UDPHandler {
         (new UDPThreadSend(data, port)).start();
     }
 
-    public void sendReceive(String data, UDPDataReceiveHandler handOff) {
+/*    public void sendReceive(String data, UDPDataReceiveHandler handOff) {
         (new UDPThreadSendReceive(data, handOff, port)).start();
 
-    }
+    }*/
 
 
     public interface UDPDataReceiveHandler {
@@ -81,7 +81,7 @@ public class UDPHandler {
             }
         }
     }
-    public class UDPThreadSendReceive extends Thread { //ask Aaron why it was private?
+   /* public class UDPThreadSendReceive extends Thread { //ask Aaron why it was private?
 
         // global vs local
 
@@ -130,7 +130,7 @@ public class UDPHandler {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
 }
 
 

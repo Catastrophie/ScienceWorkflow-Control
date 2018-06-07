@@ -150,11 +150,27 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements MovementDial.
             thetaInt= -1;
         }
 
+        UDPHandler sciCom = new UDPHandler("155.101.8.219", 8080);
+
+        sciCom.send("DRIVE " + thetaInt + " " + speed);
+
+
+
         emerRobo_Cont.drive(thetaInt, speed);
 
     }
 
 
+/*    //???? TODO:
+    private abstract class UDPDataReceive implements UDPHandler.UDPDataReceiveHandler{
+
+        @Override
+        public void recieveHandler(String handOff) {
+            System.out.println(handOff);
+
+        }
+
+    }*/
 
 
 
