@@ -1,74 +1,149 @@
 package edu.utah.chpc.crystal.test;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * Created by crystal on 2/1/2018.
+ * Provides a mechanism to send and receive Strings to a remote host over UDP
+ *
+ * All transactions are handled outside of the main thread and do not block program execution.
+ *
+ * Transactions are carried out in the order they are requested.
+ *
+ * @author Aaron Pabst
  */
-
 public class UDPHandler {
 
-    String dstAddress;
-    int port;
-    private boolean word;
+    private String address;
+    private int port;
 
+    private static final int BUFF_SIZE = 2048;
+    private static final int MAX_PENDING = 1024; // The maximum number of pending UDP Transactions
 
-    public UDPHandler(String addr, int port) {
-        dstAddress = addr;
-        this.port = port;
+    private BlockingQueue<Runnable> netQue; // Holds Pending UDP transactions
+
+    private volatile Thread tConsume;
+
+    /**
+     * Creates a new UDPHandler object pointed at addr:portno.
+     *
+     * @param addr
+     * @param portno
+     */
+    public UDPHandler(String addr, int portno){
+        address = addr;
+        port = portno;
+        netQue = new LinkedBlockingQueue<Runnable>(MAX_PENDING);
+
+        // Fire up consumer
+        start();
     }
 
-    public void send(String data) {
-        //instance of class
-        (new UDPThreadSend(data, port)).start();
+    /**
+     * Starts the consumer thread
+     */
+    public void start(){
+        tConsume = new Thread(new Consumer());
+        tConsume.start();
     }
 
-/*    public void sendReceive(String data, UDPDataReceiveHandler handOff) {
-        (new UDPThreadSendReceive(data, handOff, port)).start();
+    /**
+     * Stops the consumer thread and flushes the job queue
+     */
+    public void kill(){
+        tConsume.interrupt();
+        tConsume = null;
+    }
 
-    }*/
+    /* Public accessors/mutators */
 
+    /**
+     * @return The address of the remote host.
+     */
+    public String getAddress(){ return address; }
 
-    public interface UDPDataReceiveHandler {
-        public void receiveHandler(String handOff);
+    /**
+     * @return The port number of the remote host.
+     */
+    public int getPortNo(){ return port; }
 
-    } //pass a function as an class...
+    /**
+     * Changes the target address of the remote host.
+     *
+     * This does not update the address of currently pending transactions.
+     *
+     * @param addr
+     */
+    public void setAddress(String addr) { address = addr; }
 
-    // utility class
-    private class UDPThreadSend extends Thread {
+    /**
+     * Changes the target port number of the remote host.
+     *
+     * This does not update the port number of currently pending transactions.
+     *
+     * @param port
+     */
+    public void setPort(int port) { this.port = port; }
 
+    /**
+     * Sends UDP data represented as a String to the remote host.
+     *
+     * Returns true if the data was queued for sending, false if the data was unable to be queued.
+     *
+     * @param data
+     */
+    public boolean send(String data){
+        return netQue.offer(new UDPSendThread(data, address, port));
+    }
+
+    /**
+     * Sends a string of data to the remote host and waits for a response on a separate thread.
+     *
+     * When a response is received, the handler function is called with the received String as
+     * an argument.
+     *
+     * @param data
+     * @param handler
+     */
+    public boolean sendReceive(String data, UDPResponseHandler handler){
+        return netQue.offer(new UDPSendReceiveThread(data, address, port, handler));
+    }
+
+    /**
+     * Contains the procedure for sending data over UDP
+     */
+    private class UDPSendThread implements Runnable{
+        String data;
+        String addr;
         int port;
-        // global variable
 
-        String message;
-
-        public UDPThreadSend(String send, int port) {
-
+        UDPSendThread(String data, String addr, int port){
+            super();
+            this.data = data;
+            this.addr = addr;
             this.port = port;
-            message = send;
         }
 
-        public void run() {
-            DatagramSocket socket;
+        @Override
+        public void run(){
+            try{
+                // Parse data
+                byte[] buff = data.getBytes();
+                InetAddress address = InetAddress.getByName(addr);
+                DatagramPacket pack = new DatagramPacket(buff, buff.length, address, port);
+                DatagramSocket sock = new DatagramSocket();
 
+                sock.send(pack);
 
-            try {
-                socket = new DatagramSocket();
-                InetAddress address = InetAddress.getByName(dstAddress);
-
-                byte[] buf;
-                String s = message;
-                buf = s.getBytes();
-
-                DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
-                socket.send(packet);
-
-                socket.close();
+                sock.close();
 
             } catch (SocketException e) {
                 e.printStackTrace();
@@ -76,51 +151,96 @@ public class UDPHandler {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
-
-
             }
         }
     }
-   /* public class UDPThreadSendReceive extends Thread { //ask Aaron why it was private?
 
-        // global vs local
+    /**
+     * Converts a byte[] with an unknown number of trailing null characters to a null terminated String;
+     *
+     * @param data
+     * @return
+     */
+    private String conditionData(byte[] data){
+        String str = "";
+        boolean hadNull = false;
 
-        String message;
-        UDPDataReceiveHandler received;
-        int port;
-
-
-        public UDPThreadSendReceive(String send, UDPDataReceiveHandler receive, int port) {
-            this.port = port;
-
-            message = send;
-            received = receive;
+        for(byte b : data){
+            str = str.concat(String.valueOf((char)b));
+            if(b == 0){
+                hadNull = true;
+                break;
+            }
         }
 
-        public void run() {
+        if(!hadNull){
+            str = str.concat("\0000");
+        }
 
+        return str;
+    }
 
-            try {
+    private String trimStr(byte[] old){
+        ArrayList<Byte> good = new ArrayList<Byte>();
 
-                DatagramSocket socket = new DatagramSocket();
-                InetAddress address = InetAddress.getByName(dstAddress);
+        for(int i = 0; i < old.length; i++){
+            if(old[i] == 0)
+                break;
+            good.add(old[i]);
+        }
 
-                byte[] buf;
-                String s = message;
-                buf = s.getBytes();
+        byte[] goodArr = new byte[good.size()];
 
-                DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
-                socket.send(packet);
+        for(int i = 0; i < good.size(); i++)
+            goodArr[i] = good.get(i);
 
-                byte[] recvbuff = new byte[1024];
-                packet = new DatagramPacket(recvbuff, recvbuff.length);
+        try {
+            //return new String(goodArr, "UTF-8");
+            return new String(goodArr, 0, goodArr.length, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
-                socket.receive(packet);
-                System.out.println("received");
-                String data = new String(recvbuff);
-                received.receiveHandler(data);
-                socket.close();
+    /**
+     * Contains the procedure for sending data over UDP and waiting for a response
+     */
+    private class UDPSendReceiveThread implements Runnable{
+        String addr;
+        int port;
+        String data;
+        UDPResponseHandler handler;
 
+        UDPSendReceiveThread(String data, String addr, int port, UDPResponseHandler handler){
+            this.addr = addr;
+            this.port = port;
+            this.data = data;
+            this.handler = handler;
+        }
+
+        public void run(){
+            try{
+                // Parse data
+                byte[] buff = data.getBytes();
+
+                // Parse IP address
+                InetAddress address = InetAddress.getByName(addr);
+
+                // Send data
+                DatagramPacket pack = new DatagramPacket(buff, buff.length, address, port);
+                DatagramSocket sock = new DatagramSocket();
+                sock.send(pack);
+
+                // Wait for a response
+                byte[] recvBuff = new byte[BUFF_SIZE];
+                DatagramPacket recv = new DatagramPacket(recvBuff, BUFF_SIZE);
+                sock.receive(recv);
+
+                sock.close();
+
+                // Call the user response handler
+                handler.handler(new String(recv.getData(), 0, recv.getLength(), "UTF-8"));
 
             } catch (SocketException e) {
                 e.printStackTrace();
@@ -130,7 +250,21 @@ public class UDPHandler {
                 e.printStackTrace();
             }
         }
-    }*/
+    }
+
+    /**
+     * Continually polls the netQue for pending jobs, running them as they come up.
+     */
+    private class Consumer implements Runnable{
+
+        @Override
+        public void run() {
+            while(true){
+                Runnable run;
+                if((run = netQue.poll()) != null)
+                    run.run();
+            }
+        }
+
+    }
 }
-
-

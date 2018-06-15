@@ -82,6 +82,8 @@ public class MovementDial extends AppCompatImageView {
 
         setTheta(theta);
 
+
+
     //    double Radian = Math.toRadians(_theta);
     //    final double PIValue = Math.PI/180;
 
@@ -102,6 +104,8 @@ public class MovementDial extends AppCompatImageView {
             Log.i("Touch", "Xvalue touch is :" + x);
             Log.i("Touch", "Yvalue touch is :" + y);
             Log.i ("Touch", "Touch point 6 changed to: " + theta);
+
+            _angleChangedListener.onAngleChanged(theta);
 
         if(distance <= Radius) {
 
@@ -151,6 +155,8 @@ public class MovementDial extends AppCompatImageView {
             Log.i("Touch", "Xvalue2 move is :" + nibCenter.x);
             Log.i("Touch", "Yvalue2 move is :" + nibCenter.y);
             Log.i ("Touch", "Move value point 7 changed to: " + theta);
+
+            _angleChangedListener.onAngleChanged(theta);
 
             distanceAdj = distance;
             distance = Math.min(distance, distanceAdj); //comparing changing polar radius values as coordinates change place.

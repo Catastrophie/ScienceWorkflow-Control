@@ -20,17 +20,17 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements MovementDial.
 
     ImageButton mainmenu;
 
-    MovementDial movementDial;
+   // MovementDial movementDial;
     Button buttonConnect;
-    TextView textViewState, textViewRx;
+    //TextView textViewState, textViewRx;
     EditText message;
     float xCoord,yCoord,_theta;
 
     Robot emerRobo_Cont;
-    EditText editTextAddress, editTextPort;
+    String Ipaddr;
+    int portNum,interval=1, histSize=1;
 
-    UDPHandler udpHandler;
-
+    UDPHandler sciComs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,14 +38,9 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements MovementDial.
 
         message = (EditText) findViewById(R.id.message);
         buttonConnect = (Button) findViewById(R.id.connect);
-        textViewState = (TextView)findViewById(R.id.state);
-        textViewRx = (TextView)findViewById(R.id.received);
+/*        textViewState = (TextView)findViewById(R.id.state);
+        textViewRx = (TextView)findViewById(R.id.received);*/
       //  buttonConnect.setOnClickListener(buttonConnectOnClickListener);
-        editTextAddress = (EditText) findViewById(R.id.address);
-        editTextPort = (EditText) findViewById(R.id.port);
-
-
-
 
        // final Video camera = new Video(this); TODO: Implement image feed under sensor readings
 
@@ -86,6 +81,16 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements MovementDial.
     }
 
 
+
+
+/*    public void getUDPHandler(String addr, int port) {
+        UDPHandler connect = new UDPHandler(addr, port);
+        this.Ipaddr = connect.getAddress();
+        this.portNum = connect.getPortNo();
+
+    }*/
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -102,6 +107,14 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements MovementDial.
 
 
     }
+/*
+    public void sciComsValues(){
+         //TODO: is this legal?
+
+        sciComs.setAddress("155.101.8.219");
+        sciComs.setPort(8080);
+    }
+*/
 
 
     /*
@@ -150,11 +163,28 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements MovementDial.
             thetaInt= -1;
         }
 
-        UDPHandler sciCom = new UDPHandler("155.101.8.219", 8080);
+        //TODO: Why isn't Robot call working?
+        sciComs = new UDPHandler("155.101.8.219", 8080);
 
-        sciCom.send("DRIVE " + thetaInt + " " + speed);
+        Ipaddr = sciComs.getAddress();
+        portNum = sciComs.getPortNo();
+
+        sciComs.setAddress(Ipaddr);
+        sciComs.setPort(portNum);
+
+        sciComs.start();
 
 
+        emerRobo_Cont = new Robot(Ipaddr, portNum, interval, histSize);
+
+       // sciComs.send("DRIVE " + thetaInt + " " + speed);
+       // sciCom.send("PAN " + xCoord + " " + yCoord);
+/*        sciComs.sendReceive("SENSOR_LIST", new UDPResponseHandler() {
+            @Override
+            public void handler(String response) {
+                System.out.println(response);
+            }
+        });*/
 
         emerRobo_Cont.drive(thetaInt, speed);
 
@@ -178,6 +208,7 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements MovementDial.
     protected void onDestroy() {
         super.onDestroy();
         emerRobo_Cont.kill();
+        sciComs.kill();
     }
 
 
