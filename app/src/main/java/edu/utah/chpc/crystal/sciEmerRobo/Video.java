@@ -1,4 +1,4 @@
-package edu.utah.chpc.crystal.test;
+package edu.utah.chpc.crystal.sciEmerRobo;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,6 +15,8 @@ import android.widget.Toast;
 import java.io.InputStream;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import edu.utah.chpc.crystal.test.R;
 
 
 public class Video extends AppCompatActivity {

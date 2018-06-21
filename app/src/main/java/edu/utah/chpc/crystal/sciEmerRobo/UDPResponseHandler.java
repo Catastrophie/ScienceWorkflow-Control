@@ -1,4 +1,4 @@
-package edu.utah.chpc.crystal.test;
+package edu.utah.chpc.crystal.sciEmerRobo;
 
 /**
  * Contains a procedure to run when UDP data is returned from the remote host.

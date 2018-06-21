@@ -1,4 +1,4 @@
-package edu.utah.chpc.crystal.test;
+package edu.utah.chpc.crystal.sciEmerRobo;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -16,11 +16,11 @@ import android.view.MotionEvent;
 
 public class MovementDial extends AppCompatImageView {
 
-    public float x, y, r, Radius, _theta, xShift, yShift, offset, xNibValue, yNibValue;
-    private double distance, distanceAdj;
+    public float x, y, r, Radius, _theta, xShift, yShift, offset;
+    private double _distance, distanceAdj;
 
     private RectF _knobRect = new RectF();
-    private PointF nibCenter, touchPoint;
+    private PointF nibCenter;
     private RectF nibRect = new RectF();
 
     OnAngleChangedListener _angleChangedListener = null;
@@ -34,11 +34,8 @@ public class MovementDial extends AppCompatImageView {
 
     public MovementDial(Context context) {
         super(context);
-
-       // this.nobWidth = (int) (_knobRect.width() * .3);
-       // this.x=getX();
-       // this.y=getY();
         nibCenter = new PointF(_knobRect.centerX(), _knobRect.centerY());
+
     }
 
     public float getTheta() {
@@ -51,6 +48,14 @@ public class MovementDial extends AppCompatImageView {
         invalidate();
     }
 
+    public double getDistance() {
+        return _distance;
+    }
+
+    public void setDistance(double distance) {
+        _distance = distance;
+        invalidate();
+    }
 
     public void setOnAngleChangedListener(OnAngleChangedListener listener) {
         _angleChangedListener = listener;
@@ -68,21 +73,18 @@ public class MovementDial extends AppCompatImageView {
         yShift = e.getY();
         xShift = e.getX();
 
-       // touchPoint = new PointF();
-
         nibCenter.x = xShift - _knobRect.centerX();
         nibCenter.y = yShift - _knobRect.centerY();
 
         x = (int)(xShift - _knobRect.centerX());
         y = map(yShift,0,(_knobRect.height()-_knobRect.centerY()),(_knobRect.height()-_knobRect.centerY()), 0);
 
-        float difVal = (float)(Radius - distance);
+        float difVal = (float)(Radius - _distance);
 
         float theta = mapThetaCoords(x,y);  //maps out theta values between 0 to 360 using a traditional unit circle layout.
 
+        double thetaBound = Math.atan2(yShift - _knobRect.centerY(), xShift - _knobRect.centerX());
         setTheta(theta);
-
-
 
     //    double Radian = Math.toRadians(_theta);
     //    final double PIValue = Math.PI/180;
@@ -95,10 +97,9 @@ public class MovementDial extends AppCompatImageView {
 
 /*      x, y = radialToCartesianCoords(r, theta);*/
 
-        distance = (float) Math.hypot(x, y); //polar coordinate radius (r = sqrt x^2 + y^2)
+        double distance = (float) Math.hypot(x, y); //polar coordinate radius (r = sqrt x^2 + y^2)
 
-        //xNibValue = (float)(distance * Math.cos(PIValue*Radian));
-       // yNibValue = (float)(distance * Math.sin(PIValue*Radian));
+        setDistance(distance);
 
         if(e.getAction() == MotionEvent.ACTION_DOWN) {
             Log.i("Touch", "Xvalue touch is :" + x);
@@ -109,7 +110,7 @@ public class MovementDial extends AppCompatImageView {
 
         if(distance <= Radius) {
 
-            nibCenter.x = xShift - _knobRect.centerX(); // _knobRect.centerX() + (float)(Radius * Math.cos(Math.toRadians(theta)));//touchPoint.x; // _knobRect.centerX() + Radius *
+            nibCenter.x = xShift - _knobRect.centerX(); //touchPoint.x; // _knobRect.centerX() + Radius *
             nibCenter.y = yShift - _knobRect.centerY(); // _knobRect.centerY() + (float)(Radius * Math.sin(Math.toRadians(theta)));//touchPoint.y;//map(yNibValue,0,(_knobRect.height()-_knobRect.centerY()),(_knobRect.height()-_knobRect.centerY()), 0);
 
             x = nibCenter.x;
@@ -117,26 +118,17 @@ public class MovementDial extends AppCompatImageView {
 
             // _knobRect.centerY() + Radius *
 
-
-           // Log.i("Touch", "Xvalue touch2 is :" +touchPoint.x);
-           // Log.i("Touch", "Yvalue touch2 is :" +touchPoint.y);
             Log.i("Touch", "Xvalue nib2 touch is :" + x);
             Log.i("Touch", "Yvalue nib2 touch is :" + y);
 
         } else if(distance > Radius) {
 
-
-           // Log.i("Touch", "Xvalue touch3 is :" +touchPoint.x);
-           // Log.i("Touch", "Yvalue touch3 is :" +touchPoint.y);
-
-            nibCenter.x = xShift - _knobRect.centerX() ;
-            nibCenter.y = yShift - _knobRect.centerY() ;
+            nibCenter.x = _knobRect.centerX() + (float)(Radius * Math.cos(thetaBound));
+            nibCenter.y = _knobRect.centerY() + (float)(Radius * Math.sin(thetaBound));
 
             x = nibCenter.x;
             y = nibCenter.y;
 
-            // x = (int)(xShift - _knobRect.centerX());
-            // y = map(yShift,0,(_knobRect.height()-_knobRect.centerY()),(_knobRect.height()-_knobRect.centerY()), 0);
 
             Log.i("Touch", "Xvalue nib1 touch is :" +nibCenter.x);
             Log.i("Touch", "Yvalue nib1 touch is :" +nibCenter.y);
@@ -225,7 +217,7 @@ public class MovementDial extends AppCompatImageView {
        nibCenter.x = x;
        nibCenter.y = y + _knobRect.centerY();
        _theta = 0f;
-       distance = 0f;
+       _distance = 0f;
 
     }
 

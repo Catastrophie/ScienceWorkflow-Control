@@ -1,9 +1,8 @@
-package edu.utah.chpc.crystal.test;
+package edu.utah.chpc.crystal.sciEmerRobo;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.ViewGroup;
@@ -11,9 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import scicoms.Robot;
+import SciComs.Robot;
+import edu.utah.chpc.crystal.test.R;
 
 
 public class Robotic_Sen_Cont extends AppCompatActivity implements MovementDial.OnAngleChangedListener {
@@ -28,7 +27,8 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements MovementDial.
 
     Robot emerRobo_Cont;
     String Ipaddr;
-    int portNum,interval=1, histSize=1;
+    int portNum, interval=1, histSize=1;
+    double distanceTraveled;
 
     UDPHandler sciComs;
 
@@ -80,17 +80,6 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements MovementDial.
         return message.getText().toString();
     }
 
-
-
-
-/*    public void getUDPHandler(String addr, int port) {
-        UDPHandler connect = new UDPHandler(addr, port);
-        this.Ipaddr = connect.getAddress();
-        this.portNum = connect.getPortNo();
-
-    }*/
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -98,24 +87,16 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements MovementDial.
         return true;
     }
 
-
     public void xAndY_Axis(){
         MovementDial coords = new MovementDial(getApplicationContext());
             xCoord = coords.x;
             yCoord = coords.y;
             _theta = coords._theta;
+            coords.setDistance(distanceTraveled);
+
 
 
     }
-/*
-    public void sciComsValues(){
-         //TODO: is this legal?
-
-        sciComs.setAddress("155.101.8.219");
-        sciComs.setPort(8080);
-    }
-*/
-
 
     /*
         Maps a value from one number range onto another @author : Aaron Pabst
@@ -163,7 +144,12 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements MovementDial.
             thetaInt= -1;
         }
 
+
+
         //TODO: Why isn't Robot call working?
+
+        //TODO: message is meant to be a text box requesting the IP addr. PortNum with be previously coded in.
+
         sciComs = new UDPHandler("155.101.8.219", 8080);
 
         Ipaddr = sciComs.getAddress();
@@ -177,7 +163,7 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements MovementDial.
 
         emerRobo_Cont = new Robot(Ipaddr, portNum, interval, histSize);
 
-       // sciComs.send("DRIVE " + thetaInt + " " + speed);
+         sciComs.send("DRIVE " + thetaInt + " " + speed);
        // sciCom.send("PAN " + xCoord + " " + yCoord);
 /*        sciComs.sendReceive("SENSOR_LIST", new UDPResponseHandler() {
             @Override

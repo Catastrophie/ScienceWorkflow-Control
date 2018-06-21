@@ -22,7 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="edu.utah.chpc.crystal.sciEmerRobo.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -31,9 +31,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Robotic_Sen_Cont"/> //android:screenOrientation="landscape"
+        <activity android:name="edu.utah.chpc.crystal.sciEmerRobo.Robotic_Sen_Cont"/> //android:screenOrientation="landscape"
       <!--  <activity android:name=".LoginActivity" /> https://stackoverflow.com/questions/22209046/fix-android-studio-login-activity-template-generated-activity  -->
-        <activity android:name=".Video" />
+        <activity android:name="edu.utah.chpc.crystal.sciEmerRobo.Video" />
         <!--<activity android:name=/> -->
 
 
