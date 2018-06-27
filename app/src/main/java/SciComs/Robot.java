@@ -14,6 +14,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 //import javax.swing.Timer;
 
+import edu.utah.chpc.crystal.sciEmerRobo.Robotic_Sen_Cont;
 import edu.utah.chpc.crystal.sciEmerRobo.UDPHandler;
 import edu.utah.chpc.crystal.sciEmerRobo.UDPResponseHandler;
 
@@ -42,6 +43,18 @@ public class Robot {
     private int rcvPending;
 
 
+    OnTouchListener _touchListener = null;
+
+
+    public interface OnTouchListener {
+        void onTouch();
+    }
+
+    public void setOnTouchListener(OnTouchListener listener) {
+        _touchListener = listener;
+    }
+
+
     /**
      * Initilizes a connection to the science workflow robot at addr:portno
      *
@@ -61,25 +74,25 @@ public class Robot {
 
         sensorIndex = 0;
 
-        onTouchListener sensorUpdate = new View.onTouchListener(){
-
-            @Override
-            public void eventPerformed(MotionEvent e) {
-                // Iterate over sensor list and call sense get for each one
-                updateAll();
-//				System.out.println("Tick");
-
-            }
-        };
-
         updateTimer = new Timer(); // Set up an event to update the sensor history at a set time interval
-        updateTimer.scheduleAtFixedRate( new TimerTask() {
+        updateTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 updateAll();
             }
-        },0, updateInterval);
+        }, 0, updateInterval);
+
+
     }
+    public void onTouchEvent(MotionEvent event) {
+
+        _touchListener.onTouch();
+
+       // Iterate over sensor list and call sense get for each one
+        updateAll();
+
+    }
+
 
     /**
      * Sends a drive command to the robot with parameters theta and speed

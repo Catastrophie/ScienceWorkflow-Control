@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,10 +13,11 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import SciComs.Robot;
+import edu.utah.chpc.crystal.sciEmerRobo.MovementDial.OnAngleChangedListener;
 import edu.utah.chpc.crystal.test.R;
 
 
-public class Robotic_Sen_Cont extends AppCompatActivity implements MovementDial.OnAngleChangedListener {
+public class Robotic_Sen_Cont extends AppCompatActivity implements OnAngleChangedListener {
 
     ImageButton mainmenu;
 
@@ -27,7 +29,7 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements MovementDial.
 
     Robot emerRobo_Cont;
     String Ipaddr;
-    int portNum, interval=1, histSize=1;
+    int portNum, interval=1, histSize=1, thetaInt, speed = 0;
     double distanceTraveled;
 
     UDPHandler sciComs;
@@ -57,8 +59,8 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements MovementDial.
 
         final MovementDial Direction = new MovementDial(this);
         Direction.setOnAngleChangedListener(this);
-        rootLayout.addView(Direction, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
 
+        rootLayout.addView(Direction, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
         setContentView(rootLayout);
        // setContentView(R.layout.activity_robotic__sen__cont);
 
@@ -113,8 +115,7 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements MovementDial.
 
     @Override
     public void onAngleChanged(float theta) {
-        int thetaInt;
-        int speed = 0;
+
 
         if (theta > 0 && theta <= 45){   //theta is greater than 0 but less than 45
             thetaInt = 315;             // drive forward turning right
@@ -146,25 +147,25 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements MovementDial.
 
 
 
-        //TODO: Why isn't Robot call working?
+        }
 
-        //TODO: message is meant to be a text box requesting the IP addr. PortNum with be previously coded in.
+        @Override
+        public boolean onTouchEvent(MotionEvent e) {
 
-        sciComs = new UDPHandler("155.101.8.219", 8080);
+            sciComs = new UDPHandler("155.101.8.177", 8080);
 
-        Ipaddr = sciComs.getAddress();
-        portNum = sciComs.getPortNo();
+            Ipaddr = sciComs.getAddress();
+            portNum = sciComs.getPortNo();
 
-        sciComs.setAddress(Ipaddr);
-        sciComs.setPort(portNum);
+            sciComs.setAddress(Ipaddr);
+            sciComs.setPort(portNum);
 
-        sciComs.start();
+            sciComs.start();
 
+            emerRobo_Cont = new Robot(Ipaddr, portNum, interval, histSize);
 
-        emerRobo_Cont = new Robot(Ipaddr, portNum, interval, histSize);
-
-         sciComs.send("DRIVE " + thetaInt + " " + speed);
-       // sciCom.send("PAN " + xCoord + " " + yCoord);
+           // sciComs.send("DRIVE " + thetaInt + " " + speed);
+            // sciCom.send("PAN " + xCoord + " " + yCoord);
 /*        sciComs.sendReceive("SENSOR_LIST", new UDPResponseHandler() {
             @Override
             public void handler(String response) {
@@ -172,9 +173,11 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements MovementDial.
             }
         });*/
 
-        emerRobo_Cont.drive(thetaInt, speed);
+            emerRobo_Cont.drive(thetaInt, speed);
 
-    }
+            return true;
+
+        }
 
 
 /*    //???? TODO:
@@ -196,7 +199,5 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements MovementDial.
         emerRobo_Cont.kill();
         sciComs.kill();
     }
-
-
 
 }
