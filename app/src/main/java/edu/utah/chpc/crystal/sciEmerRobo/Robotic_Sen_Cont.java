@@ -3,6 +3,7 @@ package edu.utah.chpc.crystal.sciEmerRobo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MotionEvent;
@@ -29,7 +30,7 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements OnAngleChange
 
     Robot emerRobo_Cont;
     String Ipaddr;
-    int portNum, interval=1, histSize=1, thetaInt, speed = 0;
+    int portNum, interval=1000, histSize=100, thetaInt, speed = 0;
     double distanceTraveled;
 
     UDPHandler sciComs;
@@ -117,42 +118,41 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements OnAngleChange
     public void onAngleChanged(float theta) {
 
 
-        if (theta > 0 && theta <= 45){   //theta is greater than 0 but less than 45
+        if (theta > 22.5 && theta <= 67.5){   //theta is greater than 0 but less than 45
             thetaInt = 315;             // drive forward turning right
 
-        }else if (theta > 45 && theta <= 90){
+        }else if (theta > 67.5 && theta <= 112.5){
             thetaInt = 0;               // drive forward
 
-        }else if (theta > 90 && theta <= 135){
+        }else if (theta > 112.5 && theta <= 157.5){
             thetaInt = 45;              // drive forward turning left
 
-        }else if (theta > 135 && theta <= 180){
+        }else if (theta > 157.5 && theta <= 202.5){
             thetaInt = 90;              // turn right
 
-        }else if (theta > 180 && theta <= 225){
+        }else if (theta > 202.5 && theta <= 247.5){
             thetaInt = 135;             // drive reverse turning left
 
-        }else if (theta > 225 && theta <= 270){
+        }else if (theta > 247.5 && theta <= 292.5){
             thetaInt = 180;             // drive reverse
 
-        }else if (theta > 270 && theta <= 315){
+        }else if (theta > 292.5 && theta <= 337.5){
             thetaInt = 225;             // drive reverse turning right
 
-        }else if (theta > 315 && theta <= 360){
+        }else if (theta > 337.5 && theta <= 360 || theta > 0 && theta <= 22.5){
             thetaInt = 270;             // turning right
 
         } else {
-            thetaInt= -1;
+            thetaInt= -1;               //error check
         }
 
+    }
 
-
-        }
 
         @Override
         public boolean onTouchEvent(MotionEvent e) {
 
-            sciComs = new UDPHandler("155.101.8.177", 8080);
+            sciComs = new UDPHandler("155.101.8.193", 8080);
 
             Ipaddr = sciComs.getAddress();
             portNum = sciComs.getPortNo();
@@ -166,18 +166,21 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements OnAngleChange
 
            // sciComs.send("DRIVE " + thetaInt + " " + speed);
             // sciCom.send("PAN " + xCoord + " " + yCoord);
-/*        sciComs.sendReceive("SENSOR_LIST", new UDPResponseHandler() {
+
+     /*   sciComs.sendReceive("SENSOR_LIST", new UDPResponseHandler() {
             @Override
             public void handler(String response) {
                 System.out.println(response);
             }
-        });*/
+        }); */
+
 
             emerRobo_Cont.drive(thetaInt, speed);
 
             return true;
 
         }
+
 
 
 /*    //???? TODO:

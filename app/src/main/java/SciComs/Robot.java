@@ -41,18 +41,13 @@ public class Robot {
     private int histSize;
 
     private int rcvPending;
+    private int updateInterval;
 
 
     OnTouchListener _touchListener = null;
 
 
-    public interface OnTouchListener {
-        void onTouch();
-    }
 
-    public void setOnTouchListener(OnTouchListener listener) {
-        _touchListener = listener;
-    }
 
 
     /**
@@ -69,28 +64,34 @@ public class Robot {
         sensorLock = new ReentrantLock();
         this.histSize = histSize;
         rcvPending = 0;
+        this.updateInterval = updateInterval;
 
         senseList(); // Populate sensor collection
 
         sensorIndex = 0;
 
-        updateTimer = new Timer(); // Set up an event to update the sensor history at a set time interval
-        updateTimer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                updateAll();
-            }
-        }, 0, updateInterval);
+
 
 
     }
+    public interface OnTouchListener {
+        void onTouch();
+    }
+
+    public void setOnTouchListener(OnTouchListener listener) {
+        _touchListener = listener;
+    }
+
     public void onTouchEvent(MotionEvent event) {
-
         _touchListener.onTouch();
-
-       // Iterate over sensor list and call sense get for each one
-        updateAll();
-
+        updateTimer = new Timer(); // Set up an event to update the sensor history at a set time interval
+        updateTimer.scheduleAtFixedRate(new TimerTask() { // ERROR:  No Such Instance Field: updateTimer
+            @Override
+            public void run() {
+                // Iterate over sensor list and call sense get for each one
+                updateAll();
+            }
+        }, 0, updateInterval);
     }
 
 

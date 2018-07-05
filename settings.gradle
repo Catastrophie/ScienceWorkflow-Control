@@ -1,1 +1,1 @@
-include ':app', ':SciComs'
+include ':app'
