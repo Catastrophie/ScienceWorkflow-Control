@@ -30,7 +30,7 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements OnAngleChange
 
     Robot emerRobo_Cont;
     String Ipaddr;
-    int portNum, interval=1000, histSize=100, thetaInt, speed = 0;
+    int portNum, interval=1, histSize=100, thetaInt, speed = 0;
     double distanceTraveled;
 
     UDPHandler sciComs;
@@ -151,8 +151,10 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements OnAngleChange
 
         @Override
         public boolean onTouchEvent(MotionEvent e) {
+            Log.i("Touch", "Touch occurred");
+            int event = e.getAction();
 
-            sciComs = new UDPHandler("155.101.8.193", 8080);
+            sciComs = new UDPHandler("155.101.8.134", 8080);
 
             Ipaddr = sciComs.getAddress();
             portNum = sciComs.getPortNo();
@@ -163,17 +165,6 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements OnAngleChange
             sciComs.start();
 
             emerRobo_Cont = new Robot(Ipaddr, portNum, interval, histSize);
-
-           // sciComs.send("DRIVE " + thetaInt + " " + speed);
-            // sciCom.send("PAN " + xCoord + " " + yCoord);
-
-     /*   sciComs.sendReceive("SENSOR_LIST", new UDPResponseHandler() {
-            @Override
-            public void handler(String response) {
-                System.out.println(response);
-            }
-        }); */
-
 
             emerRobo_Cont.drive(thetaInt, speed);
 
