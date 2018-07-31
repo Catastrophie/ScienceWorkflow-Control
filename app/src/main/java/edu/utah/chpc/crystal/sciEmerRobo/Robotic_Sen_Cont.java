@@ -20,6 +20,8 @@ import edu.utah.chpc.crystal.test.R;
 
 public class Robotic_Sen_Cont extends AppCompatActivity implements OnAngleChangedListener {
 
+    //controller
+
     ImageButton mainmenu;
 
    // MovementDial movementDial;
@@ -39,8 +41,8 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements OnAngleChange
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        message = (EditText) findViewById(R.id.message);
-        buttonConnect = (Button) findViewById(R.id.connect);
+       // message = (EditText) findViewById(R.id.message);
+        //buttonConnect = (Button) findViewById(R.id.connect);
 /*        textViewState = (TextView)findViewById(R.id.state);
         textViewRx = (TextView)findViewById(R.id.received);*/
       //  buttonConnect.setOnClickListener(buttonConnectOnClickListener);
@@ -60,6 +62,8 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements OnAngleChange
 
         final MovementDial Direction = new MovementDial(this);
         Direction.setOnAngleChangedListener(this);
+
+
 
         rootLayout.addView(Direction, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
         setContentView(rootLayout);
@@ -81,6 +85,32 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements OnAngleChange
 
     public String getMessage() {
         return message.getText().toString();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Log.i("Touch", "Touch occurred");
+
+        sciComs = new UDPHandler("155.101.8.219", 8080);
+
+        Ipaddr = sciComs.getAddress();
+        portNum = sciComs.getPortNo();
+
+        sciComs.setAddress(Ipaddr);
+        sciComs.setPort(portNum);
+
+        sciComs.start();
+
+        emerRobo_Cont = new Robot(Ipaddr, portNum, interval, histSize);
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
     }
 
     @Override
@@ -146,44 +176,10 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements OnAngleChange
             thetaInt= -1;               //error check
         }
 
+        emerRobo_Cont.onTouch();
+        emerRobo_Cont.drive(thetaInt, speed);
+
     }
-
-
-        @Override
-        public boolean onTouchEvent(MotionEvent e) {
-            Log.i("Touch", "Touch occurred");
-            int event = e.getAction();
-
-            sciComs = new UDPHandler("155.101.8.134", 8080);
-
-            Ipaddr = sciComs.getAddress();
-            portNum = sciComs.getPortNo();
-
-            sciComs.setAddress(Ipaddr);
-            sciComs.setPort(portNum);
-
-            sciComs.start();
-
-            emerRobo_Cont = new Robot(Ipaddr, portNum, interval, histSize);
-
-            emerRobo_Cont.drive(thetaInt, speed);
-
-            return true;
-
-        }
-
-
-
-/*    //???? TODO:
-    private abstract class UDPDataReceive implements UDPHandler.UDPDataReceiveHandler{
-
-        @Override
-        public void recieveHandler(String handOff) {
-            System.out.println(handOff);
-
-        }
-
-    }*/
 
 
 
@@ -195,3 +191,4 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements OnAngleChange
     }
 
 }
+

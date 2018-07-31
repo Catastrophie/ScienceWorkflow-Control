@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 
 /**
  * Created by crystal on 10/25/2017.
+ * View
  */
 
 public class MovementDial extends AppCompatImageView {
@@ -30,12 +31,9 @@ public class MovementDial extends AppCompatImageView {
         void onAngleChanged(float theta);
     }
 
-
-
     public MovementDial(Context context) {
         super(context);
         nibCenter = new PointF(_knobRect.centerX(), _knobRect.centerY());
-
     }
 
     public float getTheta() {
@@ -101,6 +99,9 @@ public class MovementDial extends AppCompatImageView {
 
         setDistance(distance);
 
+
+
+
         if(e.getAction() == MotionEvent.ACTION_DOWN) {
             Log.i("Touch", "Xvalue touch is :" + x);
             Log.i("Touch", "Yvalue touch is :" + y);
@@ -138,7 +139,6 @@ public class MovementDial extends AppCompatImageView {
 
 
             }
-            invalidate();
             return true;
 
 

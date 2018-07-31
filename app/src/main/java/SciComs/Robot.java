@@ -1,6 +1,5 @@
 package SciComs;
 import android.view.MotionEvent;
-import android.view.View;
 
 /*import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;*/
@@ -14,6 +13,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 //import javax.swing.Timer;
 
+import edu.utah.chpc.crystal.sciEmerRobo.MovementDial;
 import edu.utah.chpc.crystal.sciEmerRobo.Robotic_Sen_Cont;
 import edu.utah.chpc.crystal.sciEmerRobo.UDPHandler;
 import edu.utah.chpc.crystal.sciEmerRobo.UDPResponseHandler;
@@ -25,8 +25,9 @@ import edu.utah.chpc.crystal.sciEmerRobo.UDPResponseHandler;
  *
  * Automatically retrieves and maintains sensor information.
  *
- * @author Aaron Pabst
- * @version 0.1
+ * @author Aaron Pabst Revision by Crystal Young
+ * @version 0.2
+ * Model
  */
 public class Robot {
     private UDPHandler handler;
@@ -65,13 +66,11 @@ public class Robot {
         this.histSize = histSize;
         rcvPending = 0;
         this.updateInterval = updateInterval;
+        //this._touchListener.onTouch() = Robotic_Sen_Cont.onTouchEvent();
 
         senseList(); // Populate sensor collection
 
         sensorIndex = 0;
-
-
-
 
     }
     public interface OnTouchListener {
@@ -82,17 +81,24 @@ public class Robot {
         _touchListener = listener;
     }
 
-    public void onTouchEvent(MotionEvent event) {
-        _touchListener.onTouch();
-        updateTimer = new Timer(); // Set up an event to update the sensor history at a set time interval
-        updateTimer.scheduleAtFixedRate(new TimerTask() { // ERROR:  No Such Instance Field: updateTimer
-            @Override
-            public void run() {
-                // Iterate over sensor list and call sense get for each one
-                updateAll();
-            }
-        }, 0, updateInterval);
-    }
+
+    public void onTouch() {
+
+        /*if(event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {*/
+
+            updateTimer = new Timer(); // Set up an event to update the sensor history at a set time interval
+            updateTimer.scheduleAtFixedRate(new TimerTask() { // ERROR:  No Such Instance Field: updateTimer TODO:
+                @Override
+                public void run() {
+                    // Iterate over sensor list and call sense get for each one
+                    updateAll();
+                }
+            }, 0, updateInterval);
+           // _touchListener.onTouch();
+
+        }
+
+  //  }
 
 
     /**
