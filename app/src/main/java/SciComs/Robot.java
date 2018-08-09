@@ -83,22 +83,9 @@ public class Robot {
 
 
     public void onTouch() {
-
-        /*if(event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {*/
-
-            updateTimer = new Timer(); // Set up an event to update the sensor history at a set time interval
-            updateTimer.scheduleAtFixedRate(new TimerTask() { // ERROR:  No Such Instance Field: updateTimer TODO:
-                @Override
-                public void run() {
-                    // Iterate over sensor list and call sense get for each one
-                    updateAll();
-                }
-            }, 0, updateInterval);
-           // _touchListener.onTouch();
-
-        }
-
-  //  }
+            updateTimer = new Timer(true); // Set up an event to update the sensor history at a set time interval
+            updateTimer.scheduleAtFixedRate(new ServerTask(), 1, updateInterval);
+    }
 
 
     /**
@@ -237,5 +224,11 @@ public class Robot {
             rcvPending--;
         }
 
+    }
+    private class ServerTask extends TimerTask {
+        public void run() {
+            // Iterate over sensor list and call sense get for each one
+            updateAll();
+        }
     }
 }

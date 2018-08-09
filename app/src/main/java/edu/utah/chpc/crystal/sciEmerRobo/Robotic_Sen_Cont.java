@@ -93,7 +93,7 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements OnAngleChange
 
         Log.i("Touch", "Touch occurred");
 
-        sciComs = new UDPHandler("155.101.8.219", 8080);
+        sciComs = new UDPHandler("155.101.8.164", 8080);
 
         Ipaddr = sciComs.getAddress();
         portNum = sciComs.getPortNo();
@@ -186,7 +186,8 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements OnAngleChange
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        emerRobo_Cont.kill();
+
+        //emerRobo_Cont.kill(); // Null class until after touch?
         sciComs.kill();
     }
 
