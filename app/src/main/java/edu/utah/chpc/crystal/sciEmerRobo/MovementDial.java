@@ -17,7 +17,7 @@ import android.view.MotionEvent;
 
 public class MovementDial extends AppCompatImageView {
 
-    public float x, y, r, Radius, _theta, xShift, yShift, offset;
+    public float x, y, Radius, _theta, xShift, yShift, offset;
     private double _distance, distanceAdj;
 
     private RectF _knobRect = new RectF();
@@ -188,7 +188,7 @@ public class MovementDial extends AppCompatImageView {
         return false; // super.onTouchEvent(event); Makes onTouchEvent repeat forever
 
     }
-    public float mapThetaCoords(float x, float y) {
+    private float mapThetaCoords(float x, float y) {
 
         double atan2 = Math.atan2(y , x);
         float theta;
@@ -211,7 +211,7 @@ public class MovementDial extends AppCompatImageView {
         return 0;
     }
 
-    public void reset(){
+    private void reset(){
        x = _knobRect.centerX()-(_knobRect.width()/2);
        y = _knobRect.centerY()-(_knobRect.height()/2);
        nibCenter.x = x;

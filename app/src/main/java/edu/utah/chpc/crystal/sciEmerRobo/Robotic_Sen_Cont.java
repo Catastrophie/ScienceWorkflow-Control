@@ -1,5 +1,6 @@
 package edu.utah.chpc.crystal.sciEmerRobo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,34 +20,27 @@ import edu.utah.chpc.crystal.sciEmerRobo.MovementDial.OnAngleChangedListener;
 import edu.utah.chpc.crystal.test.R;
 
 
-public class Robotic_Sen_Cont extends AppCompatActivity implements OnAngleChangedListener {
+public class Robotic_Sen_Cont extends AppCompatActivity implements OnAngleChangedListener, SpeedGauge.OnSpeedChangedListener {
 
     //controller
 
     ImageButton mainmenu;
-
-   // MovementDial movementDial;
     Button buttonConnect;
     //TextView textViewState, textViewRx;
     EditText message;
     float xCoord,yCoord,_theta;
-
     Robot emerRobo_Cont;
     String Ipaddr;
-    int portNum, interval=1, histSize=100, thetaInt, speed = 0;
+    int portNum, interval=1, histSize=100, thetaInt, speed;
     double distanceTraveled;
 
     UDPHandler sciComs;
 
+    /** Primarily the design of the layout and instanciation of buttons and classes. */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-       // message = (EditText) findViewById(R.id.message);
-        //buttonConnect = (Button) findViewById(R.id.connect);
-/*        textViewState = (TextView)findViewById(R.id.state);
-        textViewRx = (TextView)findViewById(R.id.received);*/
-      //  buttonConnect.setOnClickListener(buttonConnectOnClickListener);
 
        // final Video camera = new Video(this); TODO: Implement image feed under sensor readings
 
@@ -57,28 +52,35 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements OnAngleChange
        // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-       // rootLayout.addView(MenuL, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
+/*
+        mainmenu = (ImageButton) findViewById(R.id.menuIcon);
 
-
-        final MovementDial Direction = new MovementDial(this);
-        Direction.setOnAngleChangedListener(this);
-
-
-
-        rootLayout.addView(Direction, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
-        setContentView(rootLayout);
-       // setContentView(R.layout.activity_robotic__sen__cont);
-
-     //  mainmenu = (ImageButton) findViewById(R.id.menuIcon);
-
-      /* mainmenu.setOnClickListener(new View.OnClickListener() {
+        mainmenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Intent intent = new Intent(Robotic_Sen_Cont.this, MainActivity.class);
                 startActivity(intent);
-            }
+            } TODO: Why is this erroring out as a null object reference (NullPointerException)
         });*/
+
+
+        final MovementDial Direction = new MovementDial(this);
+        Direction.setOnAngleChangedListener(this);
+
+        final SpeedGauge Speed = new SpeedGauge(this);
+        Speed.setOnSpeedChangedListener(this);
+
+
+      //  rootLayout.addView(mainmenu, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+
+        rootLayout.addView(Direction, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 2));
+      //  rootLayout.addView(/*Speed*/, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 2));
+
+        setContentView(rootLayout);
+       // setContentView(R.layout.activity_robotic__sen__cont);
+
+
     }
 /*    View.OnClickListener buttonConnectOnClickListener = new View.OnClickListener() {
 */
@@ -87,6 +89,7 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements OnAngleChange
         return message.getText().toString();
     }
 
+    /** When Activity is started and anytime it becomes the primary focus of the screen */
     @Override
     public void onResume() {
         super.onResume();
@@ -107,6 +110,7 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements OnAngleChange
 
     }
 
+    /** When Activity is no longer the primary focus of the screen but hasn't yet been closed from the system */
     @Override
     public void onPause() {
         super.onPause();
@@ -120,22 +124,25 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements OnAngleChange
         return true;
     }
 
+
+
     public void xAndY_Axis(){
         MovementDial coords = new MovementDial(getApplicationContext());
             xCoord = coords.x;
             yCoord = coords.y;
-            _theta = coords._theta;
+            _theta = coords._theta; //TODO: check if this is the best method for getting values
             coords.setDistance(distanceTraveled);
-
-
-
     }
 
-    /*
-        Maps a value from one number range onto another @author : Aaron Pabst
-        */
+    public void velocity() {
+        SpeedGauge momentum = new SpeedGauge(getApplicationContext());
+        speed = momentum._speed;
+    }
 
-    // Drive is 0 forward, 90 left, 180 reverse, and 270 right.
+    /**
+        Maps a value from one number range onto another @author : Aaron Pabst
+
+        Drive is 0 forward, 90 left, 180 reverse, and 270 right.*/
 
         private int map(double x, double in_min, double in_max, double out_min, double out_max)
         {
@@ -144,6 +151,7 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements OnAngleChange
         }
 
 
+    /** When direction is toggled */
     @Override
     public void onAngleChanged(float theta) {
 
@@ -181,6 +189,12 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements OnAngleChange
 
     }
 
+    /** When speed is toggled */
+    @Override
+    public void onSpeedChanged() {
+
+    }
+
 
 
     @Override
@@ -190,6 +204,7 @@ public class Robotic_Sen_Cont extends AppCompatActivity implements OnAngleChange
         //emerRobo_Cont.kill(); // Null class until after touch?
         sciComs.kill();
     }
+
 
 }
 
